@@ -1,0 +1,58 @@
+@import './base.css';
+
+#app {
+  width: 100%;
+  padding: 0;
+  font-weight: normal;
+  box-sizing: border-box;
+}
+
+/* Reset link defaults — individual components handle their own link colours */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── Shared button styles ─────────────────────────────────────────────────────
+   Used across HomeView, LoginView, RegisterView, NotFoundView, etc.
+   Component-specific overrides (padding, width, etc.) are scoped in each view.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.btn-primary {
+  background: var(--accent-green);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-green-hover);
+}
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  padding: 0.7rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}

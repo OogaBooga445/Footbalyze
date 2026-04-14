@@ -1,0 +1,87 @@
+/* ─── Design tokens ────────────────────────────────────────────────────── */
+:root {
+  --bg-primary:    #04080f;
+  --bg-surface:    rgba(8, 14, 26, 0.82);
+  --bg-surface-2:  rgba(12, 20, 35, 0.9);
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-hover:  rgba(255, 255, 255, 0.18);
+  --accent:        #3b82f6;
+  --accent-hover:  #60a5fa;
+  --accent-muted:  #0c1e3d;
+  --accent-green:       #10b981;
+  --accent-green-hover: #34d399;
+  --accent-green-muted: #052b1c;
+  --text-primary:  #e2e8f0;
+  --text-secondary:#94a3b8;
+  --text-muted:    #64748b;
+  --win:           #10b981;
+  --win-muted:     #052b1c;
+  --lose:          #ef4444;
+  --lose-muted:    #2b0a0a;
+  --draw:          #f59e0b;
+  --draw-muted:    #2d1f00;
+  --radius:        8px;
+  --radius-lg:     14px;
+  --shadow:        0 1px 4px rgba(0,0,0,0.5);
+  --shadow-lg:     0 8px 32px rgba(0,0,0,0.6);
+  /* position colours */
+  --pos-gk:        #f59e0b;
+  --pos-gk-muted:  #2d1f00;
+  --pos-def:       #3b82f6;
+  --pos-def-muted: #0c1e3d;
+  --pos-mid:       #10b981;
+  --pos-mid-muted: #052b1c;
+  --pos-fwd:       #ef4444;
+  --pos-fwd-muted: #2b0a0a;
+}
+
+/* ─── Normalize ────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────────── */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-primary);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--text-primary);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Vue app root ─────────────────────────────────────────────────────── */
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
