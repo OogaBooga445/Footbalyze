@@ -21,7 +21,7 @@ export default {
     badge: 'Live Data · Multiple Leagues',
     title: 'Football Analytics',
     titleSub: 'For Every Fan',
-    subtitle: "Standings, stats, scorers, and match results across Europe's top competitions — all in one clean, fast platform.",
+    subtitle: "Standings, stats, scorers, and match results from the world's top leagues — all in one fast platform.",
     exploreLeagues: 'Explore Leagues',
     createAccount: 'Create Free Account',
     myDashboard: 'My Dashboard',
