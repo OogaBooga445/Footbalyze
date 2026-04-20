@@ -83,7 +83,7 @@ export default {
     email: 'Email',
     password: 'Password',
     usernamePlaceholder: 'Choose a username',
-    emailPlaceholder: 'you@example.com',
+    emailPlaceholder: "you{'@'}example.com",
     passwordPlaceholder: 'Create a password',
     reqChars: '3–20 characters',
     reqAlphanum: 'Letters, numbers, underscores only',
