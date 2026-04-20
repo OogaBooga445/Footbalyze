@@ -508,11 +508,11 @@
               <div class="wl-stat"><span class="wl-val">{{ watchlistStats[p.Player_ID].played }}</span><span class="wl-lbl">MP</span></div>
             </template>
             <template v-else>
-              <div class="wl-stat"><span class="wl-val wl-val--fwd">{{ watchlistStats[p.Player_ID].goals }}</span><span class="wl-lbl">G</span></div>
+              <div class="wl-stat"><span class="wl-val wl-val--fwd">{{ watchlistStats[p.Player_ID].goals ?? '—' }}</span><span class="wl-lbl">G</span></div>
               <div class="wl-divider"></div>
-              <div class="wl-stat"><span class="wl-val wl-val--mid">{{ watchlistStats[p.Player_ID].assists }}</span><span class="wl-lbl">A</span></div>
+              <div class="wl-stat"><span class="wl-val wl-val--mid">{{ watchlistStats[p.Player_ID].assists ?? '—' }}</span><span class="wl-lbl">A</span></div>
               <div class="wl-divider"></div>
-              <div class="wl-stat"><span class="wl-val">{{ watchlistStats[p.Player_ID].penalties }}</span><span class="wl-lbl">Pen</span></div>
+              <div class="wl-stat"><span class="wl-val">{{ watchlistStats[p.Player_ID].penalties ?? '—' }}</span><span class="wl-lbl">Pen</span></div>
               <div class="wl-divider"></div>
               <div class="wl-stat"><span class="wl-val">{{ watchlistStats[p.Player_ID].playedMatches ?? '—' }}</span><span class="wl-lbl">Apps</span></div>
             </template>
@@ -1035,31 +1035,28 @@ async function fetchWatchlist() {
 
 async function fetchWatchlistStats(players) {
   watchlistStatsLoading.value = true
-  const results = await Promise.allSettled(
-    players.map(p =>
-      api.get(`/players/${p.Player_ID}/stats`, {
-        params: {
-          code: p.LeagueCode || 'PL',
-          position: (p.Position || '').toLowerCase(),
-          ...(p.Position === 'Goalkeeper' ? { teamId: p.Team_ID } : {}),
-        },
-      }).then(r => ({ id: p.Player_ID, data: r.data }))
-    )
-  )
-  const map = {}
-  for (let i = 0; i < results.length; i++) {
-    const r = results[i]
-    const p = players[i]
-    if (r.status === 'fulfilled') {
-      map[r.value.id] = r.value.data
-    } else {
-      map[p.Player_ID] = p.Position === 'Goalkeeper'
+  try {
+    const payload = players.map(p => ({
+      id: p.Player_ID,
+      code: p.LeagueCode || 'PL',
+      position: (p.Position || '').toLowerCase(),
+      teamId: p.Team_ID || null,
+    }))
+    const res = await api.get('/players/stats/bulk', {
+      params: { players: JSON.stringify(payload) },
+    })
+    watchlistStats.value = { ...watchlistStats.value, ...res.data }
+  } catch {
+    const fallback = {}
+    for (const p of players) {
+      fallback[p.Player_ID] = p.Position === 'Goalkeeper'
         ? { cleanSheets: 0, conceded: 0, played: 0 }
-        : { goals: 0, assists: 0, penalties: 0, playedMatches: null }
+        : { goals: null, assists: null, penalties: null, playedMatches: null }
     }
+    watchlistStats.value = { ...watchlistStats.value, ...fallback }
+  } finally {
+    watchlistStatsLoading.value = false
   }
-  watchlistStats.value = { ...watchlistStats.value, ...map }
-  watchlistStatsLoading.value = false
 }
 
 async function fetchWatchlistPlayers(code = watchlistPickerLeague.value) {

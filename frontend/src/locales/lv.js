@@ -83,7 +83,7 @@ export default {
     email: 'E-pasts',
     password: 'Parole',
     usernamePlaceholder: 'Izvēlies lietotājvārdu',
-    emailPlaceholder: "tu{'@'}piemers.lv",
+    emailPlaceholder: 'Ievadi e-pastu',
     passwordPlaceholder: 'Izveidot paroli',
     reqChars: '3–20 rakstzīmes',
     reqAlphanum: 'Tikai burti, cipari un pasvītrojumi',

@@ -340,6 +340,77 @@ router.get('/players/:id/profile', async (req, res) => {
   }
 });
 
+router.get('/players/stats/bulk', async (req, res) => {
+  let players;
+  try {
+    players = JSON.parse(req.query.players);
+  } catch {
+    return res.status(400).json({ error: 'Invalid players param' });
+  }
+
+  const byLeague = {};
+  for (const p of players) {
+    if (!byLeague[p.code]) byLeague[p.code] = [];
+    byLeague[p.code].push(p);
+  }
+
+  const result = {};
+
+  await Promise.all(
+    Object.entries(byLeague).map(async ([code, leaguePlayers]) => {
+      const gks = leaguePlayers.filter(p => p.position === 'goalkeeper');
+      const outfield = leaguePlayers.filter(p => p.position !== 'goalkeeper');
+
+      if (outfield.length) {
+        try {
+          const data = await fdApi.getScorers(code, 400);
+          const scorers = data.scorers || [];
+          for (const p of outfield) {
+            const entry = scorers.find(s => s.player.id === p.id);
+            result[p.id] = {
+              goals: entry?.goals ?? null,
+              assists: entry?.assists ?? null,
+              penalties: entry?.penalties ?? null,
+              playedMatches: entry?.playedMatches ?? null,
+            };
+          }
+        } catch {
+          for (const p of outfield) {
+            result[p.id] = { goals: null, assists: null, penalties: null, playedMatches: null };
+          }
+        }
+      }
+
+      if (gks.length) {
+        try {
+          const matchData = await fdApi.getMatches(code, { season: SEASON });
+          const matches = matchData.matches || [];
+          for (const p of gks) {
+            const teamMatches = matches.filter(m =>
+              m.status === 'FINISHED' && (m.homeTeam.id === p.teamId || m.awayTeam.id === p.teamId)
+            );
+            let cleanSheets = 0, conceded = 0;
+            for (const m of teamMatches) {
+              const ft = m.score?.fullTime;
+              if (!ft || ft.home == null || ft.away == null) continue;
+              const ga = m.homeTeam.id === p.teamId ? ft.away : ft.home;
+              conceded += ga;
+              if (ga === 0) cleanSheets++;
+            }
+            result[p.id] = { cleanSheets, conceded, played: teamMatches.length };
+          }
+        } catch {
+          for (const p of gks) {
+            result[p.id] = { cleanSheets: 0, conceded: 0, played: 0 };
+          }
+        }
+      }
+    })
+  );
+
+  res.json(result);
+});
+
 router.get('/players/:id/stats', async (req, res) => {
   const playerId = parseInt(req.params.id, 10);
   const code = req.query.code || 'PL';
