@@ -4,8 +4,8 @@
     <div class="auth-prompt-card">
       <span class="prompt-icon">⭐</span>
       <h2>Your Dashboard</h2>
-      <p>Please log in to manage your favourites.</p>
-      <RouterLink to="/login" class="btn-primary">Go to Login</RouterLink>
+      <p>{{ $t('dashboard.noAuth') }}</p>
+      <RouterLink to="/login" class="btn-primary">{{ $t('dashboard.toLogin') }}</RouterLink>
     </div>
   </div>
 
@@ -13,19 +13,19 @@
   <div v-else class="dashboard">
 
     <div class="dashboard-header">
-      <h1>Welcome, <span class="username-highlight">{{ user.username }}</span></h1>
-      <p class="dashboard-sub">Your personal football hub.</p>
+      <h1>{{ $t('dashboard.welcome', { name: user.username }) }}</h1>
+      <p class="dashboard-sub">{{ $t('dashboard.sub') }}</p>
     </div>
 
     <!-- ── Tabs ──────────────────────────────────────────────────────────── -->
     <div class="dash-tabs">
-      <button class="dash-tab" :class="{ active: dashTab === 'overview' }" @click="dashTab = 'overview'">Overview</button>
+      <button class="dash-tab" :class="{ active: dashTab === 'overview' }" @click="dashTab = 'overview'">{{ $t('dashboard.overview') }}</button>
       <button class="dash-tab" :class="{ active: dashTab === 'predictions' }" @click="dashTab = 'predictions'">
-        Predictions
+        {{ $t('dashboard.predictions') }}
         <span v-if="pastPredictions.length || upcomingFixtures.length" class="dash-tab-count">{{ upcomingFixtures.length + pastPredictions.length }}</span>
       </button>
       <button class="dash-tab" :class="{ active: dashTab === 'watchlist' }" @click="dashTab = 'watchlist'">
-        Watchlist
+        {{ $t('dashboard.watchlist') }}
         <span v-if="watchlist.length" class="dash-tab-count">{{ watchlist.length }}</span>
       </button>
     </div>
@@ -39,12 +39,12 @@
       <!-- ── Favourite Team ──────────────────────────────────────────────── -->
       <div class="fav-card">
         <div class="fav-card-header">
-          <h2 class="section-title">Favourite Team</h2>
+          <h2 class="section-title">{{ $t('dashboard.favTeam') }}</h2>
           <button
             v-if="currentFavTeam"
             class="change-btn"
             @click="showTeamPicker = !showTeamPicker"
-          >{{ showTeamPicker ? 'Cancel' : 'Change' }}</button>
+          >{{ showTeamPicker ? $t('dashboard.cancel') : $t('dashboard.change') }}</button>
         </div>
 
         <!-- Team display -->
@@ -95,7 +95,7 @@
 
           <!-- Form dots -->
           <div v-if="teamForm.length" class="form-row">
-            <span class="form-label">Form</span>
+            <span class="form-label">{{ $t('dashboard.form') }}</span>
             <div class="form-dots">
               <span
                 v-for="(r, i) in teamForm"
@@ -107,10 +107,10 @@
             </div>
           </div>
 
-          <RouterLink :to="`/teams/${currentFavTeam.Team_ID}`" class="view-link">View Squad &rarr;</RouterLink>
+          <RouterLink :to="`/teams/${currentFavTeam.Team_ID}`" class="view-link">{{ $t('dashboard.viewSquad') }}</RouterLink>
         </div>
 
-        <p v-else-if="!showTeamPicker" class="no-fav">No favourite team set yet.</p>
+        <p v-else-if="!showTeamPicker" class="no-fav">{{ $t('dashboard.noFavTeam') }}</p>
 
         <!-- Team picker -->
         <div v-if="showTeamPicker || !currentFavTeam" class="picker-section">
@@ -118,9 +118,9 @@
             v-model="teamPickerSearch"
             class="picker-search"
             type="text"
-            placeholder="Search teams..."
+            :placeholder="$t('dashboard.searchTeams')"
           />
-          <div v-if="teamsLoading" class="picker-loading">Loading teams...</div>
+          <div v-if="teamsLoading" class="picker-loading">{{ $t('dashboard.loadingTeams') }}</div>
           <div v-else class="team-picker-list">
             <div v-for="group in teamPickerGroups" :key="group.leagueCode" class="picker-club-group">
               <div class="picker-club-header">
@@ -146,11 +146,11 @@
           </div>
           <div v-if="pendingTeamId" class="picker-actions">
             <button class="btn-primary" :disabled="savingTeam" @click="saveTeam">
-              {{ savingTeam ? 'Saving...' : `Save ${pendingTeamName}` }}
+              {{ savingTeam ? $t('dashboard.saving') : $t('dashboard.saveTeam', { name: pendingTeamName }) }}
             </button>
             <span v-if="teamError" class="error-msg">{{ teamError }}</span>
           </div>
-          <p v-if="teamSuccess" class="success-msg">Team saved!</p>
+          <p v-if="teamSuccess" class="success-msg">{{ $t('dashboard.teamSaved') }}</p>
         </div>
 
       </div>
@@ -158,12 +158,12 @@
       <!-- ── Favourite Player ─────────────────────────────────────────────── -->
       <div class="fav-card">
         <div class="fav-card-header">
-          <h2 class="section-title">Favourite Player</h2>
+          <h2 class="section-title">{{ $t('dashboard.favPlayer') }}</h2>
           <button
             v-if="currentFavPlayer"
             class="change-btn"
             @click="showPlayerPicker = !showPlayerPicker"
-          >{{ showPlayerPicker ? 'Cancel' : 'Change' }}</button>
+          >{{ showPlayerPicker ? $t('dashboard.cancel') : $t('dashboard.change') }}</button>
         </div>
 
         <!-- Player display -->
@@ -175,7 +175,7 @@
             <div class="player-display-info">
               <div class="player-name-row">
                 <span class="player-display-name">{{ currentFavPlayer.Name }} {{ currentFavPlayer.Surname }}</span>
-                <span class="saved-badge">✓ Saved</span>
+                <span class="saved-badge">{{ $t('dashboard.savedBtn') }}</span>
               </div>
               <div class="player-meta-row">
                 <span class="pos-badge" :class="`pos-badge--${posClass(currentFavPlayer.Position)}`">
@@ -189,52 +189,52 @@
           </div>
 
           <!-- Season stats strip -->
-          <div v-if="playerStatsLoading" class="player-stats-loading">Loading stats...</div>
+          <div v-if="playerStatsLoading" class="player-stats-loading">{{ $t('dashboard.loadingStats') }}</div>
           <template v-else-if="playerStats">
             <!-- GK stats -->
             <div v-if="currentFavPlayer.Position === 'Goalkeeper'" class="stat-strip">
               <div class="strip-item">
                 <span class="strip-val strip-val--win">{{ playerStats.cleanSheets }}</span>
-                <span class="strip-lbl">Clean Sheets</span>
+                <span class="strip-lbl">{{ $t('dashboard.cleanSheets') }}</span>
               </div>
               <div class="strip-divider"></div>
               <div class="strip-item">
                 <span class="strip-val strip-val--lose">{{ playerStats.conceded }}</span>
-                <span class="strip-lbl">Conceded</span>
+                <span class="strip-lbl">{{ $t('dashboard.conceded') }}</span>
               </div>
               <div class="strip-divider"></div>
               <div class="strip-item">
                 <span class="strip-val">{{ playerStats.played }}</span>
-                <span class="strip-lbl">Games</span>
+                <span class="strip-lbl">{{ $t('dashboard.games') }}</span>
               </div>
             </div>
             <!-- Outfield stats -->
             <div v-else class="stat-strip">
               <div class="strip-item">
                 <span class="strip-val strip-val--fwd">{{ playerStats.goals }}</span>
-                <span class="strip-lbl">Goals</span>
+                <span class="strip-lbl">{{ $t('dashboard.goals') }}</span>
               </div>
               <div class="strip-divider"></div>
               <div class="strip-item">
                 <span class="strip-val strip-val--mid">{{ playerStats.assists }}</span>
-                <span class="strip-lbl">Assists</span>
+                <span class="strip-lbl">{{ $t('dashboard.assists') }}</span>
               </div>
               <div class="strip-divider"></div>
               <div class="strip-item">
                 <span class="strip-val">{{ playerStats.penalties }}</span>
-                <span class="strip-lbl">Pens</span>
+                <span class="strip-lbl">{{ $t('dashboard.pens') }}</span>
               </div>
               <div class="strip-divider"></div>
               <div class="strip-item">
                 <span class="strip-val">{{ playerStats.playedMatches ?? '—' }}</span>
-                <span class="strip-lbl">Apps</span>
+                <span class="strip-lbl">{{ $t('dashboard.apps') }}</span>
               </div>
             </div>
           </template>
 
           <!-- Team form -->
           <div v-if="playerTeamForm.length" class="form-row">
-            <span class="form-label">Form</span>
+            <span class="form-label">{{ $t('dashboard.form') }}</span>
             <div class="form-dots">
               <span
                 v-for="(r, i) in playerTeamForm"
@@ -246,10 +246,10 @@
             </div>
           </div>
 
-          <RouterLink :to="`/teams/${currentFavPlayer.Team_ID}`" class="view-link">View Squad &rarr;</RouterLink>
+          <RouterLink :to="`/teams/${currentFavPlayer.Team_ID}`" class="view-link">{{ $t('dashboard.viewSquad') }}</RouterLink>
         </div>
 
-        <p v-else-if="!showPlayerPicker" class="no-fav">No favourite player set yet.</p>
+        <p v-else-if="!showPlayerPicker" class="no-fav">{{ $t('dashboard.noFavPlayer') }}</p>
 
         <!-- Player picker -->
         <div v-if="showPlayerPicker || !currentFavPlayer" class="picker-section">
@@ -267,9 +267,9 @@
             v-model="playerPickerSearch"
             class="picker-search"
             type="text"
-            placeholder="Search players or teams..."
+            :placeholder="$t('dashboard.searchPlayers')"
           />
-          <div v-if="playersLoading" class="picker-loading">Loading players...</div>
+          <div v-if="playersLoading" class="picker-loading">{{ $t('dashboard.loadingPlayers') }}</div>
           <div v-else class="player-picker-list">
             <div v-for="group in playerPickerGroups" :key="group.teamId" class="picker-club-group">
               <div class="picker-club-header">
@@ -301,11 +301,11 @@
           </div>
           <div v-if="pendingPlayerId" class="picker-actions">
             <button class="btn-primary" :disabled="savingPlayer" @click="savePlayer">
-              {{ savingPlayer ? 'Saving...' : 'Save Player' }}
+              {{ savingPlayer ? $t('dashboard.saving') : $t('dashboard.savePlayer') }}
             </button>
             <span v-if="playerError" class="error-msg">{{ playerError }}</span>
           </div>
-          <p v-if="playerSuccess" class="success-msg">Player saved!</p>
+          <p v-if="playerSuccess" class="success-msg">{{ $t('dashboard.playerSaved') }}</p>
         </div>
 
       </div>
@@ -313,7 +313,7 @@
 
     <!-- ── Recent Results ─────────────────────────────────────────────────── -->
     <div v-if="recentResults.length" class="full-card">
-      <h2 class="section-title">Recent Results
+      <h2 class="section-title">{{ $t('dashboard.recentResults') }}
         <span class="section-sub-inline">{{ currentFavTeam?.Team_Name }}</span>
       </h2>
       <div class="results-list">
@@ -344,10 +344,10 @@
 
     <!-- ── Upcoming Fixtures ──────────────────────────────────────────────── -->
     <div v-if="currentFavTeam" class="full-card">
-      <h2 class="section-title">Upcoming Fixtures
+      <h2 class="section-title">{{ $t('dashboard.upcomingFixtures') }}
         <span class="section-sub-inline">{{ currentFavTeam.Team_Name }}</span>
       </h2>
-      <div v-if="fixturesLoading" class="loading-text">Loading fixtures...</div>
+      <div v-if="fixturesLoading" class="loading-text">{{ $t('dashboard.loadingFixtures') }}</div>
       <div v-else-if="upcomingFixtures.length" class="fixtures-list">
         <div
           v-for="(fix, i) in upcomingFixtures"
@@ -369,10 +369,10 @@
               {{ fix.AwayTeam }}
             </span>
           </div>
-          <span class="fixture-badge">Upcoming</span>
+          <span class="fixture-badge">{{ $t('dashboard.upcoming') }}</span>
         </div>
       </div>
-      <p v-else class="no-fav">No upcoming fixtures found.</p>
+      <p v-else class="no-fav">{{ $t('dashboard.noFixtures') }}</p>
     </div>
 
     </template>
@@ -381,8 +381,8 @@
     <!-- ── Predictions tab ───────────────────────────────────────────────── -->
     <template v-if="dashTab === 'predictions'">
     <div v-if="currentFavTeam && (upcomingFixtures.length || pastPredictions.length)" class="full-card">
-      <h2 class="section-title">Match Predictions
-        <span class="section-sub-inline">Predict scores before kickoff</span>
+      <h2 class="section-title">{{ $t('dashboard.matchPredictions') }}
+        <span class="section-sub-inline">{{ $t('dashboard.predictSub') }}</span>
       </h2>
 
       <!-- Upcoming: prediction inputs -->
@@ -418,14 +418,14 @@
               :class="{ 'pred-save-btn--saved': savedPredictions[fix.Match_ID] }"
               :disabled="savingPredId === fix.Match_ID"
               @click="savePrediction(fix.Match_ID)"
-            >{{ savingPredId === fix.Match_ID ? '...' : savedPredictions[fix.Match_ID] ? '✓ Saved' : 'Predict' }}</button>
+            >{{ savingPredId === fix.Match_ID ? '...' : savedPredictions[fix.Match_ID] ? $t('dashboard.savedBtn') : $t('dashboard.predict') }}</button>
           </div>
         </div>
       </div>
 
       <!-- Past predictions -->
       <template v-if="pastPredictions.length">
-        <h3 class="pred-past-header">Past Predictions</h3>
+        <h3 class="pred-past-header">{{ $t('dashboard.pastPredictions') }}</h3>
         <div class="predictions-list">
           <div v-for="p in pastPredictions" :key="`past-${p.Match_ID}`" class="pred-row pred-row--past">
             <div class="pred-teams">
@@ -446,7 +446,7 @@
             <div class="pred-footer">
               <span class="pred-date">{{ formatDate(p.MatchDate) }}</span>
               <span class="pred-outcome" :class="`pred-outcome--${p.outcome}`">
-                {{ p.outcome === 'exact' ? '🎯 Exact!' : p.outcome === 'correct' ? '✓ Correct' : '✗ Wrong' }}
+                {{ p.outcome === 'exact' ? $t('predOutcome.exact') : p.outcome === 'correct' ? $t('predOutcome.correct') : $t('predOutcome.wrong') }}
               </span>
             </div>
           </div>
@@ -455,10 +455,14 @@
     </div>
 
     <div v-else-if="!currentFavTeam" class="empty-tab-state">
-      <p>Set a favourite team on the <button class="inline-link" @click="dashTab = 'overview'">Overview</button> tab to start making predictions.</p>
+      <i18n-t keypath="dashboard.setFavTeam" tag="p">
+        <template #tab>
+          <button class="inline-link" @click="dashTab = 'overview'">{{ $t('dashboard.overviewTab') }}</button>
+        </template>
+      </i18n-t>
     </div>
     <div v-else class="empty-tab-state">
-      <p>No upcoming fixtures or past predictions yet.</p>
+      <p>{{ $t('dashboard.noPredictions') }}</p>
     </div>
     </template>
     <!-- ── /Predictions tab ──────────────────────────────────────────────── -->
@@ -468,11 +472,11 @@
     <div class="full-card">
       <div class="fav-card-header">
         <h2 class="section-title">
-          Watchlist
+          {{ $t('dashboard.watchlist') }}
           <span v-if="watchlist.length" class="section-sub-inline">{{ watchlist.length }} player{{ watchlist.length !== 1 ? 's' : '' }}</span>
         </h2>
         <button class="change-btn" @click="toggleWatchlistPicker">
-          {{ showWatchlistPicker ? 'Cancel' : '+ Add Player' }}
+          {{ showWatchlistPicker ? $t('dashboard.cancel') : $t('dashboard.addPlayer') }}
         </button>
       </div>
 
@@ -513,7 +517,7 @@
               <div class="wl-stat"><span class="wl-val">{{ watchlistStats[p.Player_ID].playedMatches ?? '—' }}</span><span class="wl-lbl">Apps</span></div>
             </template>
           </div>
-          <div v-else-if="watchlistStatsLoading" class="watchlist-stats-loading">Loading stats…</div>
+          <div v-else-if="watchlistStatsLoading" class="watchlist-stats-loading">{{ $t('dashboard.loadingStats') }}</div>
         </div>
       </div>
 
@@ -533,9 +537,9 @@
           v-model="watchlistPickerSearch"
           class="picker-search"
           type="text"
-          placeholder="Search players or teams..."
+          :placeholder="$t('dashboard.searchPlayers')"
         />
-        <div v-if="watchlistPlayersLoading" class="picker-loading">Loading players...</div>
+        <div v-if="watchlistPlayersLoading" class="picker-loading">{{ $t('dashboard.loadingPlayers') }}</div>
         <div v-else class="player-picker-list">
           <div v-for="group in watchlistPickerGroups" :key="group.teamId" class="picker-club-group">
             <div class="picker-club-header">
@@ -568,10 +572,10 @@
         </div>
         <div v-if="pendingWatchlistPlayerId" class="picker-actions">
           <button class="btn-primary" :disabled="addingToWatchlist" @click="addToWatchlist">
-            {{ addingToWatchlist ? 'Adding...' : isWatched(pendingWatchlistPlayerId) ? 'Already on Watchlist' : 'Add to Watchlist' }}
+            {{ addingToWatchlist ? $t('dashboard.adding') : isWatched(pendingWatchlistPlayerId) ? $t('dashboard.alreadyWatched') : $t('dashboard.addToWatchlist') }}
           </button>
         </div>
-        <p v-if="watchlistAddSuccess" class="success-msg">Added to watchlist!</p>
+        <p v-if="watchlistAddSuccess" class="success-msg">{{ $t('dashboard.addedToWatchlist') }}</p>
       </div>
     </div>
     </template>
@@ -584,10 +588,12 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 import { nationalityFlag, posClass, posAbbr } from '../utils/football'
 
 const store = useStore()
+const { t } = useI18n()
 const dashTab = ref('overview')
 const user = computed(() => store.state.user)
 
@@ -1146,6 +1152,7 @@ async function fetchPredictions() {
 onMounted(async () => {
   if (!user.value) return
   await Promise.all([fetchTeams(), fetchPlayers(), fetchFavourites()])
+  fetchTeamDetail(savedTeamId.value)
   fetchPlayerStats(savedPlayerId.value)
   const player = players.value.find(p => p.Player_ID === savedPlayerId.value)
   fetchPlayerTeamDetail(player?.Team_ID || null)

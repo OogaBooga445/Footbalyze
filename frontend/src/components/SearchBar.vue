@@ -18,7 +18,7 @@
         v-model="query"
         type="text"
         class="search-input"
-        placeholder="Search teams or leagues..."
+        :placeholder="$t('search.placeholder')"
         @keydown.escape="close"
         @keydown.down.prevent="moveDown"
         @keydown.up.prevent="moveUp"
@@ -48,7 +48,7 @@
       </div>
 
       <div v-else-if="query.length >= 1 && !loading && results.length === 0" class="search-dropdown">
-        <div class="search-empty">No results for "{{ query }}"</div>
+        <div class="search-empty">{{ $t('search.noResults', { query }) }}</div>
       </div>
     </div>
 
@@ -58,7 +58,10 @@
 <script setup>
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const router   = useRouter()
 const open     = ref(false)
@@ -131,17 +134,17 @@ const results = computed(() => {
   const leagues = allLeagues.value
     .filter(l => l.name.toLowerCase().includes(q) || l.country.toLowerCase().includes(q))
     .slice(0, 2)
-    .map(l => ({ id: `league-${l.code}`, label: l.name, sub: l.country, flag: l.flag, crest: null, type: 'League', route: `/leagues?code=${l.code}` }))
+    .map(l => ({ id: `league-${l.code}`, label: l.name, sub: l.country, flag: l.flag, crest: null, type: t('search.typeLeague'), route: `/leagues?code=${l.code}` }))
 
   const teams = allTeams.value
     .filter(t => t.Team_Name.toLowerCase().includes(q))
     .slice(0, 4)
-    .map(t => ({ id: `team-${t.Team_ID}`, label: t.Team_Name, sub: t.leagueName, crest: t.Crest, flag: null, type: 'Club', route: `/teams/${t.Team_ID}` }))
+    .map(tm => ({ id: `team-${tm.Team_ID}`, label: tm.Team_Name, sub: tm.leagueName, crest: tm.Crest, flag: null, type: t('search.typeClub'), route: `/teams/${tm.Team_ID}` }))
 
   const players = allPlayers.value
     .filter(p => `${p.Name} ${p.Surname}`.toLowerCase().includes(q))
     .slice(0, 5)
-    .map(p => ({ id: `player-${p.Player_ID}`, label: `${p.Name} ${p.Surname}`, sub: `${p.Team_Name} · ${p.Position}`, flag: null, crest: null, type: 'Player', route: `/players/${p.Player_ID}?teamId=${p.Team_ID}&code=${p.leagueCode}` }))
+    .map(p => ({ id: `player-${p.Player_ID}`, label: `${p.Name} ${p.Surname}`, sub: `${p.Team_Name} · ${p.Position}`, flag: null, crest: null, type: t('search.typePlayer'), route: `/players/${p.Player_ID}?teamId=${p.Team_ID}&code=${p.leagueCode}` }))
 
   return [...leagues, ...teams, ...players]
 })

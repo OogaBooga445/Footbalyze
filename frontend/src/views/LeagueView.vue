@@ -5,8 +5,8 @@
     <template v-if="!selectedLeague">
       <div class="page-header">
         <div>
-          <h1>Leagues</h1>
-          <p class="page-sub">Pick a competition for a live snapshot</p>
+          <h1>{{ $t('leagues.title') }}</h1>
+          <p class="page-sub">{{ $t('leagues.sub') }}</p>
         </div>
       </div>
 
@@ -31,16 +31,16 @@
     <template v-else>
       <div class="page-header">
         <div>
-          <button class="back-btn" @click="clearLeague">← All Leagues</button>
+          <button class="back-btn" @click="clearLeague">{{ $t('common.allLeagues') }}</button>
           <h1>
             <span class="header-flag">{{ selectedLeague.flag }}</span>
             {{ selectedLeague.name }}
           </h1>
-          <p class="page-sub">{{ selectedLeague.country }} · 2025/26 Season</p>
+          <p class="page-sub">{{ selectedLeague.country }} · {{ $t('common.season') }}</p>
         </div>
       </div>
 
-      <div v-if="loading" class="loading">Loading league data...</div>
+      <div v-if="loading" class="loading">{{ $t('leagues.loading') }}</div>
 
       <template v-else>
 
@@ -49,7 +49,7 @@
 
           <!-- Leader -->
           <div class="highlight-card leader-card">
-            <div class="hc-label">League Leader</div>
+            <div class="hc-label">{{ $t('leagues.leagueLeader') }}</div>
             <div class="hc-main">
               <img v-if="leader?.crest" :src="leader.crest" class="hc-crest" :alt="leader.name" />
               <div v-else class="hc-avatar">{{ leader?.name?.charAt(0) }}</div>
@@ -65,7 +65,7 @@
 
           <!-- Top Scorer -->
           <div class="highlight-card scorer-card" style="cursor:pointer" @click="topScorer && $router.push(`/players/${topScorer.player.id}?teamId=${topScorer.team.id}&code=${selectedLeague.code}`)">
-            <div class="hc-label">Top Scorer</div>
+            <div class="hc-label">{{ $t('leagues.topScorer') }}</div>
             <div class="hc-main">
               <div class="hc-avatar scorer-avatar">{{ topScorer?.player?.name?.charAt(0) || '?' }}</div>
               <div class="hc-info">
@@ -81,23 +81,23 @@
 
           <!-- Season stats -->
           <div class="highlight-card stats-card">
-            <div class="hc-label">Season Stats</div>
+            <div class="hc-label">{{ $t('leagues.seasonStats') }}</div>
             <div class="stats-grid">
               <div class="stat-item">
                 <span class="stat-val">{{ seasonStats.totalGoals }}</span>
-                <span class="stat-lbl">Goals</span>
+                <span class="stat-lbl">{{ $t('leagues.goals') }}</span>
               </div>
               <div class="stat-item">
                 <span class="stat-val">{{ seasonStats.played }}</span>
-                <span class="stat-lbl">Matches Played</span>
+                <span class="stat-lbl">{{ $t('leagues.matchesPlayed') }}</span>
               </div>
               <div class="stat-item">
                 <span class="stat-val">{{ seasonStats.gpg }}</span>
-                <span class="stat-lbl">Goals / Game</span>
+                <span class="stat-lbl">{{ $t('leagues.goalsPerGame') }}</span>
               </div>
               <div class="stat-item">
                 <span class="stat-val" :style="typeof seasonStats.topMatchday === 'string' && seasonStats.topMatchday.length > 3 ? 'font-size:0.9rem' : ''">{{ seasonStats.topMatchday }}</span>
-                <span class="stat-lbl">{{ seasonStats.hasKnockout ? 'Current Stage' : 'Current Matchday' }}</span>
+                <span class="stat-lbl">{{ seasonStats.hasKnockout ? $t('leagues.currentStage') : $t('leagues.currentMatchday') }}</span>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
         <!-- ── Results + Fixtures (all leagues) ─────────────────────────── -->
         <div class="fixtures-row">
           <div class="fixtures-panel">
-            <h2 class="panel-title">Recent Results</h2>
+            <h2 class="panel-title">{{ $t('leagues.recentResults') }}</h2>
             <div v-if="recentResults.length" class="match-list">
               <div v-for="m in recentResults" :key="m.id" class="match-row">
                 <span class="match-md">{{ m.matchday ? `MD ${m.matchday}` : formatDate(m.utcDate) }}</span>
@@ -126,10 +126,10 @@
                 </div>
               </div>
             </div>
-            <p v-else class="empty-state">No recent results.</p>
+            <p v-else class="empty-state">{{ $t('leagues.noRecentResults') }}</p>
           </div>
           <div class="fixtures-panel">
-            <h2 class="panel-title">Upcoming Fixtures</h2>
+            <h2 class="panel-title">{{ $t('leagues.upcomingFixtures') }}</h2>
             <div v-if="upcomingFixtures.length" class="match-list">
               <div v-for="m in upcomingFixtures" :key="m.id" class="match-row">
                 <span class="match-md">{{ formatDate(m.utcDate) }}</span>
@@ -146,15 +146,15 @@
                 </div>
               </div>
             </div>
-            <p v-else class="empty-state">No upcoming fixtures.</p>
+            <p v-else class="empty-state">{{ $t('leagues.noUpcoming') }}</p>
           </div>
         </div>
 
         <!-- ── Mini table top 5 (non-CL only) ───────────────────────────────── -->
         <div v-if="selectedLeague.code !== 'CL'" class="mini-table-wrap">
           <div class="panel-title-row">
-            <h2 class="panel-title">Top 5</h2>
-            <router-link :to="`/table?code=${selectedLeague.code}`" class="see-all-link">Full table →</router-link>
+            <h2 class="panel-title">{{ $t('leagues.top5') }}</h2>
+            <router-link :to="`/table?code=${selectedLeague.code}`" class="see-all-link">{{ $t('leagues.fullTable') }}</router-link>
           </div>
           <table class="mini-table">
             <thead>
@@ -198,7 +198,7 @@
 
           <!-- Top Scorers -->
           <div class="leaderboard-panel">
-            <h2 class="panel-title">Top Scorers</h2>
+            <h2 class="panel-title">{{ $t('leagues.topScorers') }}</h2>
             <div class="leaderboard-list">
               <div v-for="(s, i) in topScorers" :key="s.player?.id ?? i" class="lb-row" style="cursor:pointer" @click="$router.push(`/players/${s.player.id}?teamId=${s.team.id}&code=${selectedLeague.code}`)">
                 <span class="lb-rank">{{ i + 1 }}</span>
@@ -214,7 +214,7 @@
 
           <!-- Top Assists -->
           <div class="leaderboard-panel">
-            <h2 class="panel-title">Top Assists</h2>
+            <h2 class="panel-title">{{ $t('leagues.topAssists') }}</h2>
             <div v-if="topAssists.length" class="leaderboard-list">
               <div v-for="(s, i) in topAssists" :key="s.player?.id ?? i" class="lb-row" style="cursor:pointer" @click="$router.push(`/players/${s.player.id}?teamId=${s.team.id}&code=${selectedLeague.code}`)">
                 <span class="lb-rank">{{ i + 1 }}</span>
@@ -226,7 +226,7 @@
                 <span class="lb-stat lb-stat--assists">{{ s.assists }}</span>
               </div>
             </div>
-            <p v-else class="empty-state">Assist data not available for this competition.</p>
+            <p v-else class="empty-state">{{ $t('leagues.noAssists') }}</p>
           </div>
 
         </div>
@@ -234,7 +234,7 @@
         <!-- ── Horizontal knockout bracket (CL only) ──────────────────────── -->
         <template v-if="knockoutBracket">
           <div class="bracket-section">
-            <div class="bracket-section-header">Knockout Stage</div>
+            <div class="bracket-section-header">{{ $t('leagues.knockoutStage') }}</div>
             <div class="bracket-wrap">
               <div class="bracket-cols">
                 <div v-for="round in knockoutBracket" :key="round.stage" class="bracket-col">

@@ -4,11 +4,11 @@
     <!-- ── Phase 1: League picker ─────────────────────────────────────────── -->
     <template v-if="!selectedLeague">
       <div class="page-header">
-        <h1>Matches</h1>
-        <p class="page-sub">Select a competition to browse results &amp; fixtures</p>
+        <h1>{{ $t('matches.title') }}</h1>
+        <p class="page-sub">{{ $t('matches.sub') }}</p>
       </div>
 
-      <div v-if="leaguesLoading" class="loading">Loading competitions...</div>
+      <div v-if="leaguesLoading" class="loading">{{ $t('matches.loadingComps') }}</div>
       <div v-else class="league-grid">
         <button
           v-for="league in leagues"
@@ -32,17 +32,17 @@
 
       <!-- Header -->
       <div class="page-header">
-        <button class="back-btn" @click="clearLeague">← All Leagues</button>
+        <button class="back-btn" @click="clearLeague">{{ $t('common.allLeagues') }}</button>
         <h1>
           <span class="header-flag">{{ selectedLeague.flag }}</span>
           {{ selectedLeague.name }}
         </h1>
         <p class="page-sub">
           <template v-if="activeTab === 'results'">
-            {{ filteredMatches.length }} of {{ allResults.length }} results
+            {{ $t('matches.ofResults', { n: filteredMatches.length, total: allResults.length }) }}
           </template>
           <template v-else>
-            {{ upcomingFiltered.length }} upcoming fixtures
+            {{ $t('matches.upcomingCount', { n: upcomingFiltered.length }) }}
           </template>
         </p>
       </div>
@@ -50,16 +50,16 @@
       <!-- Mode tabs -->
       <div class="mode-tabs">
         <button class="mode-tab" :class="{ active: activeTab === 'results' }" @click="activeTab = 'results'">
-          Results
+          {{ $t('matches.results') }}
           <span class="mode-count">{{ allResults.length }}</span>
         </button>
         <button class="mode-tab" :class="{ active: activeTab === 'fixtures' }" @click="activeTab = 'fixtures'">
-          Fixtures
+          {{ $t('matches.fixtures') }}
           <span class="mode-count">{{ allUpcoming.length }}</span>
         </button>
       </div>
 
-      <div v-if="loading" class="loading">Loading matches...</div>
+      <div v-if="loading" class="loading">{{ $t('matches.loadingMatches') }}</div>
 
       <template v-else>
 
@@ -70,29 +70,29 @@
           <div v-if="allResults.length" class="stats-bar">
             <div class="stat-pill">
               <span class="stat-val">{{ stats.totalGoals }}</span>
-              <span class="stat-lbl">Total Goals</span>
+              <span class="stat-lbl">{{ $t('matches.totalGoals') }}</span>
             </div>
             <div class="stat-pill">
               <span class="stat-val">{{ stats.avgGoals }}</span>
-              <span class="stat-lbl">Avg / Game</span>
+              <span class="stat-lbl">{{ $t('matches.avgGame') }}</span>
             </div>
             <div class="stat-pill stat-pill--win">
               <span class="stat-val">{{ stats.homeWins }}</span>
-              <span class="stat-lbl">Home Wins</span>
+              <span class="stat-lbl">{{ $t('matches.homeWins') }}</span>
             </div>
             <div class="stat-pill stat-pill--draw">
               <span class="stat-val">{{ stats.draws }}</span>
-              <span class="stat-lbl">Draws</span>
+              <span class="stat-lbl">{{ $t('matches.draws') }}</span>
             </div>
             <div class="stat-pill stat-pill--lose">
               <span class="stat-val">{{ stats.awayWins }}</span>
-              <span class="stat-lbl">Away Wins</span>
+              <span class="stat-lbl">{{ $t('matches.awayWins') }}</span>
             </div>
           </div>
 
           <!-- Biggest win card -->
           <div v-if="stats.biggestWin" class="biggest-win-card">
-            <span class="biggest-win-label">Biggest Win</span>
+            <span class="biggest-win-label">{{ $t('matches.biggestWin') }}</span>
             <div class="biggest-win-match">
               <div class="bw-team">
                 <span class="bw-name">{{ stats.biggestWin.HomeTeam }}</span>
@@ -108,10 +108,10 @@
 
           <!-- Controls -->
           <div class="controls">
-            <input v-model="searchTerm" type="text" class="search-input" placeholder="🔍  Search by team..." />
+            <input v-model="searchTerm" type="text" class="search-input" :placeholder="'🔍  ' + $t('matches.searchPlaceholder')" />
             <select v-model="sortOption">
-              <option value="date-desc">Newest First</option>
-              <option value="date-asc">Oldest First</option>
+              <option value="date-desc">{{ $t('matches.newestFirst') }}</option>
+              <option value="date-asc">{{ $t('matches.oldestFirst') }}</option>
             </select>
           </div>
 
@@ -132,7 +132,7 @@
           <!-- Team chips -->
           <div v-if="teamOptions.length" class="team-filter-section">
             <div class="team-chips-scroll">
-              <button class="team-chip" :class="{ active: teamFilter === '' }" @click="teamFilter = ''">All Teams</button>
+              <button class="team-chip" :class="{ active: teamFilter === '' }" @click="teamFilter = ''">{{ $t('matches.allTeams') }}</button>
               <button
                 v-for="team in teamOptions"
                 :key="team"
@@ -144,9 +144,9 @@
           </div>
 
           <p v-if="teamFilter" class="team-filter-summary">
-            Matches involving <strong>{{ teamFilter }}</strong>
-            <span class="summary-count">({{ filteredMatches.length }} result{{ filteredMatches.length !== 1 ? 's' : '' }})</span>
-            <button class="clear-filter" @click="teamFilter = ''">&times; Clear</button>
+            {{ $t('matches.matchesInvolving') }} <strong>{{ teamFilter }}</strong>
+            <span class="summary-count">({{ filteredMatches.length }})</span>
+            <button class="clear-filter" @click="teamFilter = ''">{{ $t('matches.clearFilter') }}</button>
           </p>
 
           <!-- Grouped results -->
@@ -181,7 +181,7 @@
                   <!-- Comments panel -->
                   <li v-if="expandedMatchId === match.Match_ID" class="comments-panel-row" @click.stop>
                     <div class="comments-panel">
-                      <div v-if="commentsLoading[match.Match_ID]" class="comments-loading">Loading comments...</div>
+                      <div v-if="commentsLoading[match.Match_ID]" class="comments-loading">{{ $t('matches.loadingComments') }}</div>
                       <template v-else>
                         <div v-if="commentsCache[match.Match_ID]?.length" class="comments-list">
                           <div v-for="c in commentsCache[match.Match_ID]" :key="c.Comment_ID" class="comment-item">
@@ -195,7 +195,7 @@
                                 :disabled="reportedComments.has(c.Comment_ID) || reportingComment.has(c.Comment_ID)"
                                 :title="reportedComments.has(c.Comment_ID) ? 'Reported' : 'Report comment'"
                                 @click.stop="reportComment(c.Comment_ID)"
-                              >{{ reportedComments.has(c.Comment_ID) ? 'Reported' : '🚩' }}</button>
+                              >{{ reportedComments.has(c.Comment_ID) ? $t('matches.reported') : '🚩' }}</button>
                               <button
                                 v-if="currentUser && (currentUser.id === c.User_ID || currentUser.role?.toLowerCase() === 'admin')"
                                 class="comment-delete"
@@ -205,14 +205,14 @@
                             <p class="comment-content">{{ c.Content }}</p>
                           </div>
                         </div>
-                        <p v-else class="comments-empty">No comments yet. Be the first!</p>
+                        <p v-else class="comments-empty">{{ $t('matches.noComments') }}</p>
 
                         <div v-if="currentUser" class="comment-form">
                           <input
                             v-model="commentDraft[match.Match_ID]"
                             class="comment-input"
                             type="text"
-                            placeholder="Write a comment..."
+                            :placeholder="$t('matches.commentPlaceholder')"
                             maxlength="500"
                             @keydown.enter.prevent="postComment(match.Match_ID)"
                           />
@@ -220,10 +220,10 @@
                             class="comment-submit"
                             :disabled="!commentDraft[match.Match_ID]?.trim() || postingComment[match.Match_ID]"
                             @click="postComment(match.Match_ID)"
-                          >{{ postingComment[match.Match_ID] ? '...' : 'Post' }}</button>
+                          >{{ postingComment[match.Match_ID] ? '...' : $t('matches.post') }}</button>
                         </div>
                         <p v-else class="comments-login-prompt">
-                          <RouterLink to="/login">Log in</RouterLink> to leave a comment.
+                          <RouterLink to="/login">{{ $t('matches.login') }}</RouterLink> {{ $t('matches.toComment') }}
                         </p>
                       </template>
                     </div>
@@ -233,7 +233,7 @@
             </div>
           </template>
           <p v-else class="empty-state">
-            {{ allResults.length === 0 ? 'No results yet for this competition.' : 'No matches found.' }}
+            {{ allResults.length === 0 ? $t('matches.noResults') : $t('matches.noMatches') }}
           </p>
 
         </template>
@@ -242,7 +242,7 @@
         <template v-else>
 
           <div class="controls">
-            <input v-model="fixtureSearch" type="text" class="search-input" placeholder="🔍  Search by team..." />
+            <input v-model="fixtureSearch" type="text" class="search-input" :placeholder="'🔍  ' + $t('matches.searchPlaceholder')" />
           </div>
 
           <template v-if="groupedFixtures.length">
@@ -268,12 +268,12 @@
                     <img v-if="match.AwayCrest" :src="match.AwayCrest" class="match-crest" :alt="match.AwayTeam" />
                     <span class="team-name away">{{ match.AwayTeam }}</span>
                   </div>
-                  <span class="fixture-badge">Upcoming</span>
+                  <span class="fixture-badge">{{ $t('matches.upcoming') }}</span>
                 </li>
               </ul>
             </div>
           </template>
-          <p v-else class="empty-state">No upcoming fixtures found.</p>
+          <p v-else class="empty-state">{{ $t('matches.noFixtures') }}</p>
 
         </template>
 
@@ -287,7 +287,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 // ── Leagues ───────────────────────────────────────────────────────────────────
 const store = useStore()
@@ -421,12 +424,12 @@ const resultFilter = ref('all')
 const teamFilter   = ref('')
 const fixtureSearch = ref('')
 
-const resultFilters = [
-  { value: 'all',  label: 'All' },
-  { value: 'win',  label: 'Home Win' },
-  { value: 'draw', label: 'Draw' },
-  { value: 'lose', label: 'Away Win' },
-]
+const resultFilters = computed(() => [
+  { value: 'all',  label: t('matches.all') },
+  { value: 'win',  label: t('matches.homeWin') },
+  { value: 'draw', label: t('matches.draw') },
+  { value: 'lose', label: t('matches.awayWin') },
+])
 
 // ── Stage config (for CL and other knockout comps) ────────────────────────────
 const STAGE_ORDER = ['LEAGUE_STAGE', 'LEAGUE_PHASE', 'GROUP_STAGE', 'PLAYOFFS', 'PLAYOFF_ROUND', 'LAST_16', 'ROUND_OF_16', 'QUARTER_FINALS', 'SEMI_FINALS', 'THIRD_PLACE', 'FINAL']
@@ -559,7 +562,7 @@ function buildGroups(matchList, ascending) {
 
       let label
       if (type === 'matchday') {
-        label = `Matchday ${key.replace('md_', '')}`
+        label = t('matches.matchday', { n: key.replace('md_', '') })
       } else if (type === 'stage') {
         const stage = key.replace('st_', '')
         label = STAGE_LABELS[stage] || stage.replace(/_/g, ' ')
@@ -994,6 +997,10 @@ select {
   cursor: pointer;
 }
 select:focus { outline: none; border-color: var(--accent); }
+select option {
+  background: var(--bg-surface, #0f1117);
+  color: var(--text-primary, #f1f5f9);
+}
 
 /* ─── Result filter tabs ─────────────────────────────────────────────────────── */
 .result-filters {

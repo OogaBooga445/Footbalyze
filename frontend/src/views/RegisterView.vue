@@ -1,35 +1,35 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <h2>Create Account</h2>
+      <h2>{{ $t('register.title') }}</h2>
 
       <form @submit.prevent="handleRegister" class="auth-form" novalidate>
 
         <!-- Username -->
         <div class="field" :class="{ 'field--error': fieldErrors.username }">
-          <label for="username">Username</label>
+          <label for="username">{{ $t('register.username') }}</label>
           <input
             id="username"
             v-model="username"
             type="text"
-            placeholder="Choose a username"
+            :placeholder="$t('register.usernamePlaceholder')"
             autocomplete="username"
           />
           <span v-if="fieldErrors.username" class="field-error">{{ fieldErrors.username }}</span>
           <ul v-else class="requirements">
-            <li :class="req(username.length >= 3 && username.length <= 20)">3–20 characters</li>
-            <li :class="req(/^[a-zA-Z0-9_]*$/.test(username) && username.length > 0)">Letters, numbers, underscores only</li>
+            <li :class="req(username.length >= 3 && username.length <= 20)">{{ $t('register.reqChars') }}</li>
+            <li :class="req(/^[a-zA-Z0-9_]*$/.test(username) && username.length > 0)">{{ $t('register.reqAlphanum') }}</li>
           </ul>
         </div>
 
         <!-- Email -->
         <div class="field" :class="{ 'field--error': fieldErrors.email }">
-          <label for="email">Email</label>
+          <label for="email">{{ $t('register.email') }}</label>
           <input
             id="email"
             v-model="email"
             type="email"
-            placeholder="you@example.com"
+            :placeholder="$t('register.emailPlaceholder')"
             autocomplete="email"
           />
           <span v-if="fieldErrors.email" class="field-error">{{ fieldErrors.email }}</span>
@@ -37,34 +37,34 @@
 
         <!-- Password -->
         <div class="field" :class="{ 'field--error': fieldErrors.password }">
-          <label for="password">Password</label>
+          <label for="password">{{ $t('register.password') }}</label>
           <input
             id="password"
             v-model="password"
             type="password"
-            placeholder="Create a password"
+            :placeholder="$t('register.passwordPlaceholder')"
             autocomplete="new-password"
           />
           <span v-if="fieldErrors.password" class="field-error">{{ fieldErrors.password }}</span>
           <ul class="requirements">
-            <li :class="req(password.length >= 8)">At least 8 characters</li>
-            <li :class="req(/[A-Z]/.test(password))">At least one uppercase letter</li>
-            <li :class="req(/[0-9]/.test(password))">At least one number</li>
+            <li :class="req(password.length >= 8)">{{ $t('register.reqLength') }}</li>
+            <li :class="req(/[A-Z]/.test(password))">{{ $t('register.reqUpper') }}</li>
+            <li :class="req(/[0-9]/.test(password))">{{ $t('register.reqNumber') }}</li>
           </ul>
         </div>
 
         <p v-if="generalError" class="error-msg">{{ generalError }}</p>
 
         <button type="submit" class="btn-primary" :disabled="loading || !canSubmit">
-          {{ loading ? 'Creating account...' : 'Register' }}
+          {{ loading ? $t('register.submitting') : $t('register.submit') }}
         </button>
       </form>
 
       <p v-if="successMessage" class="success-msg">{{ successMessage }}</p>
 
       <p class="auth-switch">
-        Already have an account?
-        <RouterLink to="/login">Login</RouterLink>
+        {{ $t('register.haveAccount') }}
+        <RouterLink to="/login">{{ $t('nav.login') }}</RouterLink>
       </p>
     </div>
   </div>
@@ -73,9 +73,11 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const username = ref('')
 const email    = ref('')
@@ -103,7 +105,7 @@ async function handleRegister() {
   loading.value = true
   try {
     await api.post('/register', { username: username.value, email: email.value, password: password.value })
-    successMessage.value = 'Account created! Redirecting to login...'
+    successMessage.value = t('register.success')
     username.value = ''
     email.value = ''
     password.value = ''
@@ -115,7 +117,7 @@ async function handleRegister() {
     } else if (data?.message) {
       generalError.value = data.message
     } else {
-      generalError.value = 'Registration failed. Please try again.'
+      generalError.value = t('register.failed')
     }
   } finally {
     loading.value = false

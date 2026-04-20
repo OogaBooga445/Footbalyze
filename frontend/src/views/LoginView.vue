@@ -1,12 +1,12 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <h2 v-if="!user">Login</h2>
-      <h2 v-else>Welcome back, {{ user.username }}</h2>
+      <h2 v-if="!user">{{ $t('login.title') }}</h2>
+      <h2 v-else>{{ $t('login.welcome', { name: user.username }) }}</h2>
 
       <form v-if="!user" @submit.prevent="handleLogin" class="auth-form">
         <div class="field">
-          <label for="email">Email</label>
+          <label for="email">{{ $t('login.email') }}</label>
           <input
             id="email"
             v-model="email"
@@ -17,32 +17,32 @@
           />
         </div>
         <div class="field">
-          <label for="password">Password</label>
+          <label for="password">{{ $t('login.password') }}</label>
           <input
             id="password"
             v-model="password"
             type="password"
-            placeholder="Your password"
+            :placeholder="$t('login.password')"
             required
             autocomplete="current-password"
           />
         </div>
 
         <button type="submit" class="btn-primary" :disabled="loading">
-          {{ loading ? 'Logging in...' : 'Login' }}
+          {{ loading ? $t('login.submitting') : $t('login.submit') }}
         </button>
       </form>
 
       <div v-if="user" class="logged-in-actions">
-        <RouterLink to="/dashboard" class="btn-primary">Go to Dashboard</RouterLink>
-        <button class="btn-ghost" @click="logout">Logout</button>
+        <RouterLink to="/dashboard" class="btn-primary">{{ $t('login.toDashboard') }}</RouterLink>
+        <button class="btn-ghost" @click="logout">{{ $t('login.logout') }}</button>
       </div>
 
       <p v-if="errorMessage" class="error-msg">{{ errorMessage }}</p>
 
       <p v-if="!user" class="auth-switch">
-        Don't have an account?
-        <RouterLink to="/register">Register</RouterLink>
+        {{ $t('login.noAccount') }}
+        <RouterLink to="/register">{{ $t('nav.register') }}</RouterLink>
       </p>
     </div>
   </div>
@@ -52,10 +52,12 @@
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 
 const store = useStore()
 const router = useRouter()
+const { t } = useI18n()
 
 const email = ref('')
 const password = ref('')
@@ -83,7 +85,7 @@ async function handleLogin() {
     password.value = ''
     router.push('/dashboard')
   } catch (error) {
-    errorMessage.value = error.response?.data?.message || 'Unable to connect to server. Is the backend running?'
+    errorMessage.value = error.response?.data?.message || t('login.error')
   } finally {
     loading.value = false
   }

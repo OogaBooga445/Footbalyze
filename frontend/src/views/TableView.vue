@@ -5,8 +5,8 @@
     <template v-if="!selectedLeague">
       <div class="page-header">
         <div>
-          <h1>League Table</h1>
-          <p class="page-sub">Select a competition to view its standings</p>
+          <h1>{{ $t('table.title') }}</h1>
+          <p class="page-sub">{{ $t('table.sub') }}</p>
         </div>
       </div>
 
@@ -31,23 +31,23 @@
     <template v-else>
       <div class="page-header">
         <div>
-          <button class="back-btn" @click="clearLeague">← All Leagues</button>
+          <button class="back-btn" @click="clearLeague">{{ $t('common.allLeagues') }}</button>
           <h1>
             <span class="header-flag">{{ selectedLeague.flag }}</span>
             {{ selectedLeague.name }}
           </h1>
-          <p class="page-sub">2025/26 Season Standings</p>
+          <p class="page-sub">{{ $t('table.seasonStandings') }}</p>
         </div>
       </div>
 
-      <div v-if="loading" class="loading">Computing standings...</div>
+      <div v-if="loading" class="loading">{{ $t('table.computing') }}</div>
 
       <div v-else-if="table.length" class="table-wrap">
         <table class="standings-table">
           <thead>
             <tr>
               <th class="col-pos">#</th>
-              <th class="col-team">Club</th>
+              <th class="col-team">{{ $t('table.club') }}</th>
               <th class="col-num" title="Played">P</th>
               <th class="col-num" title="Won">W</th>
               <th class="col-num" title="Drawn">D</th>
@@ -96,7 +96,7 @@
                     :key="fi"
                     class="form-dot"
                     :class="`dot-${r}`"
-                    :title="r === 'w' ? 'Win' : r === 'd' ? 'Draw' : 'Loss'"
+                    :title="r === 'w' ? $t('table.win') : r === 'd' ? $t('table.draw') : $t('table.loss')"
                   ></span>
                 </div>
               </td>
@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      <div v-else class="loading">No standings available.</div>
+      <div v-else class="loading">{{ $t('table.noStandings') }}</div>
     </template>
 
   </div>
@@ -120,7 +120,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const route = useRoute()
 

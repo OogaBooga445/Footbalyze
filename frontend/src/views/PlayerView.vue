@@ -1,9 +1,9 @@
 <template>
   <div class="view-container">
 
-    <button class="back-btn" @click="$router.back()">← Back</button>
+    <button class="back-btn" @click="$router.back()">{{ $t('common.back') }}</button>
 
-    <div v-if="loading" class="loading">Loading player...</div>
+    <div v-if="loading" class="loading">{{ $t('player.loading') }}</div>
     <div v-else-if="error" class="empty-state">{{ error }}</div>
 
     <template v-else-if="player">
@@ -26,7 +26,7 @@
             <span v-if="player.Nationality" class="chip">
               {{ nationalityFlag(player.Nationality) }} {{ player.Nationality }}
             </span>
-            <span v-if="player.Age" class="chip">{{ player.Age }} yrs</span>
+            <span v-if="player.Age" class="chip">{{ player.Age }} {{ $t('player.yrs') }}</span>
           </div>
 
           <RouterLink :to="`/teams/${player.Team_ID}`" class="team-link">
@@ -39,21 +39,21 @@
 
       <!-- ── Stats ─────────────────────────────────────────────────────────── -->
       <div class="stats-section">
-        <h2 class="section-title">2025/26 Season Stats</h2>
+        <h2 class="section-title">{{ $t('player.seasonStats') }}</h2>
 
         <!-- Goalkeeper -->
         <div v-if="player.Position === 'Goalkeeper'" class="stats-grid">
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.cleanSheets }}</span>
-            <span class="stat-lbl">Clean Sheets</span>
+            <span class="stat-lbl">{{ $t('player.cleanSheets') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.conceded }}</span>
-            <span class="stat-lbl">Conceded</span>
+            <span class="stat-lbl">{{ $t('player.conceded') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.played }}</span>
-            <span class="stat-lbl">Team Games</span>
+            <span class="stat-lbl">{{ $t('player.teamGames') }}</span>
           </div>
         </div>
 
@@ -61,19 +61,19 @@
         <div v-else class="stats-grid">
           <div class="stat-card stat-card--accent">
             <span class="stat-val">{{ player.stats.goals }}</span>
-            <span class="stat-lbl">Goals</span>
+            <span class="stat-lbl">{{ $t('player.goals') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.assists }}</span>
-            <span class="stat-lbl">Assists</span>
+            <span class="stat-lbl">{{ $t('player.assists') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.penalties }}</span>
-            <span class="stat-lbl">Penalties</span>
+            <span class="stat-lbl">{{ $t('player.penalties') }}</span>
           </div>
           <div class="stat-card">
             <span class="stat-val">{{ player.stats.playedMatches }}</span>
-            <span class="stat-lbl">Appearances</span>
+            <span class="stat-lbl">{{ $t('player.appearances') }}</span>
           </div>
         </div>
       </div>
@@ -109,10 +109,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 import { nationalityFlag, posClass, posAbbr } from '../utils/football'
 
 const route  = useRoute()
+const { t } = useI18n()
 const player  = ref(null)
 const loading = ref(true)
 const error   = ref(null)
@@ -127,7 +129,7 @@ onMounted(async () => {
     })
     player.value = res.data
   } catch (e) {
-    error.value = e.response?.data?.error || 'Failed to load player.'
+    error.value = e.response?.data?.error || t('player.loadError')
   } finally {
     loading.value = false
   }

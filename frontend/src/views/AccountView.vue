@@ -31,13 +31,13 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
             </svg>
-            Settings
+            {{ $t('account.settings') }}
           </RouterLink>
           <RouterLink v-if="role?.toLowerCase() === 'admin'" to="/admin" class="icon-btn icon-btn--admin" title="Admin">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
-            Admin
+            {{ $t('account.admin') }}
           </RouterLink>
         </div>
       </div>
@@ -47,30 +47,30 @@
 
       <!-- ── Prediction stats ─────────────────────────────────────────────── -->
       <section class="card">
-        <h2 class="card-title">Prediction Performance</h2>
+        <h2 class="card-title">{{ $t('account.predPerf') }}</h2>
 
-        <div v-if="statsLoading" class="card-loading">Loading stats...</div>
+        <div v-if="statsLoading" class="card-loading">{{ $t('account.loadingStats') }}</div>
 
         <template v-else-if="stats">
           <div class="perf-strip">
             <div class="perf-stat">
               <span class="perf-val perf-val--pts">{{ stats.points }}</span>
-              <span class="perf-lbl">Points</span>
+              <span class="perf-lbl">{{ $t('account.points') }}</span>
             </div>
             <div class="perf-divider"></div>
             <div class="perf-stat">
               <span class="perf-val">{{ accuracy }}%</span>
-              <span class="perf-lbl">Accuracy</span>
+              <span class="perf-lbl">{{ $t('account.accuracy') }}</span>
             </div>
             <div class="perf-divider"></div>
             <div class="perf-stat">
               <span class="perf-val perf-val--rank">#{{ rank }}</span>
-              <span class="perf-lbl">Leaderboard</span>
+              <span class="perf-lbl">{{ $t('account.leaderboard') }}</span>
             </div>
             <div class="perf-divider"></div>
             <div class="perf-stat">
               <span class="perf-val">{{ stats.total }}</span>
-              <span class="perf-lbl">Resolved</span>
+              <span class="perf-lbl">{{ $t('account.resolved') }}</span>
             </div>
           </div>
 
@@ -81,60 +81,60 @@
           </div>
 
           <div class="outcome-legend">
-            <span class="leg exact">🎯 {{ stats.exact_count }} exact</span>
-            <span class="leg correct">✓ {{ stats.correct_count }} correct</span>
-            <span class="leg wrong">✗ {{ stats.wrong_count }} wrong</span>
+            <span class="leg exact">🎯 {{ stats.exact_count }} {{ $t('leaderboardCols.exact') }}</span>
+            <span class="leg correct">✓ {{ stats.correct_count }} {{ $t('leaderboardCols.correct') }}</span>
+            <span class="leg wrong">✗ {{ stats.wrong_count }} {{ $t('leaderboardCols.wrong') }}</span>
           </div>
 
-          <RouterLink to="/leaderboard" class="card-link">View full leaderboard →</RouterLink>
+          <RouterLink to="/leaderboard" class="card-link">{{ $t('account.viewLeaderboard') }}</RouterLink>
         </template>
 
         <div v-else class="stats-empty">
-          <p>No resolved predictions yet.</p>
-          <RouterLink to="/dashboard" class="card-link">Make predictions on your dashboard →</RouterLink>
+          <p>{{ $t('account.noPredictions') }}</p>
+          <RouterLink to="/dashboard" class="card-link">{{ $t('account.toDashboard') }}</RouterLink>
         </div>
       </section>
 
       <!-- ── Quick nav ────────────────────────────────────────────────────── -->
       <section class="card">
-        <h2 class="card-title">Quick Navigation</h2>
+        <h2 class="card-title">{{ $t('account.quickNav') }}</h2>
         <div class="nav-grid">
           <RouterLink to="/dashboard" class="nav-card">
             <span class="nav-icon">⭐</span>
-            <span class="nav-label">Dashboard</span>
-            <span class="nav-desc">Favourites & predictions</span>
+            <span class="nav-label">{{ $t('account.dashboardLabel') }}</span>
+            <span class="nav-desc">{{ $t('account.dashboardDesc') }}</span>
           </RouterLink>
           <RouterLink to="/leaderboard" class="nav-card">
             <span class="nav-icon">🏆</span>
-            <span class="nav-label">Leaderboard</span>
-            <span class="nav-desc">Top predictors ranking</span>
+            <span class="nav-label">{{ $t('account.leaderboard') }}</span>
+            <span class="nav-desc">{{ $t('account.leaderboardDesc') }}</span>
           </RouterLink>
           <RouterLink to="/matches" class="nav-card">
             <span class="nav-icon">📅</span>
-            <span class="nav-label">Matches</span>
-            <span class="nav-desc">Results & fixtures</span>
+            <span class="nav-label">{{ $t('account.matchesLabel') }}</span>
+            <span class="nav-desc">{{ $t('account.matchesDesc') }}</span>
           </RouterLink>
           <RouterLink to="/table" class="nav-card">
             <span class="nav-icon">📊</span>
-            <span class="nav-label">Table</span>
-            <span class="nav-desc">League standings</span>
+            <span class="nav-label">{{ $t('account.tableLabel') }}</span>
+            <span class="nav-desc">{{ $t('account.tableDesc') }}</span>
           </RouterLink>
           <RouterLink to="/players" class="nav-card">
             <span class="nav-icon">👤</span>
-            <span class="nav-label">Players</span>
-            <span class="nav-desc">Stats & profiles</span>
+            <span class="nav-label">{{ $t('account.playersLabel') }}</span>
+            <span class="nav-desc">{{ $t('account.playersDesc') }}</span>
           </RouterLink>
           <RouterLink to="/h2h" class="nav-card">
             <span class="nav-icon">⚡</span>
-            <span class="nav-label">Head to Head</span>
-            <span class="nav-desc">Compare two clubs</span>
+            <span class="nav-label">{{ $t('account.h2hLabel') }}</span>
+            <span class="nav-desc">{{ $t('account.h2hDesc') }}</span>
           </RouterLink>
         </div>
       </section>
 
       <!-- ── Danger zone ──────────────────────────────────────────────────── -->
       <div class="danger-zone">
-        <button class="logout-btn" @click="handleLogout">Sign out of {{ username }}</button>
+        <button class="logout-btn" @click="handleLogout">{{ $t('account.signOut', { name: username }) }}</button>
       </div>
 
     </div>

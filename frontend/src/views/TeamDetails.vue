@@ -5,8 +5,8 @@
     <template v-if="!selectedLeague">
       <div class="page-header">
         <div>
-          <h1>Teams</h1>
-          <p class="page-sub">Select a competition to browse its clubs</p>
+          <h1>{{ $t('teams.title') }}</h1>
+          <p class="page-sub">{{ $t('teams.sub') }}</p>
         </div>
       </div>
 
@@ -31,7 +31,7 @@
     <template v-else>
       <div class="page-header">
         <div>
-          <button class="back-btn" @click="clearLeague">← All Leagues</button>
+          <button class="back-btn" @click="clearLeague">{{ $t('common.allLeagues') }}</button>
           <h1>
             <span class="header-flag">{{ selectedLeague.flag }}</span>
             {{ selectedLeague.name }}
@@ -45,17 +45,17 @@
           v-model="searchTerm"
           type="text"
           class="search-input"
-          placeholder="🔍  Search by club name..."
+          :placeholder="'🔍  ' + $t('teams.searchPlaceholder')"
         />
         <select v-model="sortOption">
-          <option value="name-asc">Name (A–Z)</option>
-          <option value="name-desc">Name (Z–A)</option>
-          <option value="coach">Coach Name</option>
-          <option value="country">Country</option>
+          <option value="name-asc">{{ $t('teams.sortNameAsc') }}</option>
+          <option value="name-desc">{{ $t('teams.sortNameDesc') }}</option>
+          <option value="coach">{{ $t('teams.sortCoach') }}</option>
+          <option value="country">{{ $t('teams.sortCountry') }}</option>
         </select>
       </div>
 
-      <div v-if="loading" class="empty-state">Loading clubs...</div>
+      <div v-if="loading" class="empty-state">{{ $t('teams.loading') }}</div>
 
       <div v-else>
         <ul v-if="filteredTeams.length" class="card-grid">
@@ -83,7 +83,7 @@
           </li>
         </ul>
 
-        <p v-else class="empty-state">No teams match your search.</p>
+        <p v-else class="empty-state">{{ $t('teams.noTeams') }}</p>
       </div>
     </template>
 
@@ -289,6 +289,10 @@ select {
   transition: border-color 0.2s;
 }
 select:focus { outline: none; border-color: var(--accent-green); }
+select option {
+  background: var(--bg-surface, #0f1117);
+  color: var(--text-primary, #f1f5f9);
+}
 
 /* ─── Card grid ─────────────────────────────────────────────────────────── */
 .card-grid {

@@ -11,23 +11,20 @@
         <div class="hero-text">
           <div class="hero-badge">
             <span class="badge-dot"></span>
-            Live Data · Multiple Leagues
+            {{ $t('home.badge') }}
           </div>
 
           <h1 class="hero-title">
-            Football Analytics<br />
-            <span class="hero-gradient">For Every Fan</span>
+            {{ $t('home.title') }}<br />
+            <span class="hero-gradient">{{ $t('home.titleSub') }}</span>
           </h1>
 
-          <p class="hero-subtitle">
-            Standings, stats, scorers, and match results across Europe's top competitions —
-            all in one clean, fast platform.
-          </p>
+          <p class="hero-subtitle">{{ $t('home.subtitle') }}</p>
 
           <div class="hero-ctas">
-            <RouterLink to="/leagues" class="btn-primary">Explore Leagues</RouterLink>
-            <RouterLink v-if="!user" to="/register" class="btn-ghost">Create Free Account &rarr;</RouterLink>
-            <RouterLink v-else to="/dashboard" class="btn-ghost">My Dashboard &rarr;</RouterLink>
+            <RouterLink to="/leagues" class="btn-primary">{{ $t('home.exploreLeagues') }}</RouterLink>
+            <RouterLink v-if="!user" to="/register" class="btn-ghost">{{ $t('home.createAccount') }} &rarr;</RouterLink>
+            <RouterLink v-else to="/dashboard" class="btn-ghost">{{ $t('home.myDashboard') }} &rarr;</RouterLink>
           </div>
 
           <div class="hero-chips">
@@ -64,21 +61,21 @@
             <div class="spotlight-stats">
               <div class="spotlight-stat spotlight-stat--big">
                 <span class="s-val">{{ topScorer.goals ?? 0 }}</span>
-                <span class="s-lbl">Goals</span>
+                <span class="s-lbl">{{ $t('home.goals') }}</span>
               </div>
               <div class="spotlight-divider"></div>
               <div class="spotlight-stat">
                 <span class="s-val">{{ topScorer.assists ?? 0 }}</span>
-                <span class="s-lbl">Assists</span>
+                <span class="s-lbl">{{ $t('home.assists') }}</span>
               </div>
               <div class="spotlight-divider"></div>
               <div class="spotlight-stat">
                 <span class="s-val">{{ topScorer.playedMatches ?? 0 }}</span>
-                <span class="s-lbl">Apps</span>
+                <span class="s-lbl">{{ $t('home.apps') }}</span>
               </div>
             </div>
 
-            <RouterLink to="/leagues?code=PL" class="spotlight-link">View full standings &rarr;</RouterLink>
+            <RouterLink to="/leagues?code=PL" class="spotlight-link">{{ $t('home.viewStandings') }} &rarr;</RouterLink>
           </div>
 
           <!-- Skeleton while loading -->
@@ -96,22 +93,22 @@
       <div class="numbers-inner">
         <div class="number-item">
           <span class="number-val">{{ competitions.length || '10' }}</span>
-          <span class="number-lbl">Competitions</span>
+          <span class="number-lbl">{{ $t('home.competitions') }}</span>
         </div>
         <div class="number-divider"></div>
         <div class="number-item">
           <span class="number-val">{{ stats.teams ?? '200' }}+</span>
-          <span class="number-lbl">Clubs</span>
+          <span class="number-lbl">{{ $t('home.clubs') }}</span>
         </div>
         <div class="number-divider"></div>
         <div class="number-item">
           <span class="number-val">{{ stats.players ?? '5k' }}+</span>
-          <span class="number-lbl">Players</span>
+          <span class="number-lbl">{{ $t('home.players') }}</span>
         </div>
         <div class="number-divider"></div>
         <div class="number-item">
           <span class="number-val">{{ stats.matches ?? '500' }}+</span>
-          <span class="number-lbl">Matches logged</span>
+          <span class="number-lbl">{{ $t('home.matchesLogged') }}</span>
         </div>
       </div>
     </div>
@@ -119,51 +116,51 @@
     <!-- ── Feature highlights ─────────────────────────────────────────────── -->
     <section class="section">
       <div class="section-header centered">
-        <h2 class="section-title">Everything you need to follow the game</h2>
-        <p class="section-desc">One platform. Every stat that matters.</p>
+        <h2 class="section-title">{{ $t('home.featuresTitle') }}</h2>
+        <p class="section-desc">{{ $t('home.featuresDesc') }}</p>
       </div>
 
       <div class="features-grid">
         <RouterLink to="/leagues" class="feature-card feature-card--accent">
           <div class="feature-icon">🌍</div>
-          <h3>Multi-League Coverage</h3>
-          <p>PL, Bundesliga, La Liga, Serie A, Ligue 1, Champions League and more — all under one roof.</p>
-          <span class="feature-link">Browse leagues &rarr;</span>
+          <h3>{{ $t('home.features.leagues.title') }}</h3>
+          <p>{{ $t('home.features.leagues.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.leagues.link') }} &rarr;</span>
         </RouterLink>
 
         <RouterLink to="/teams" class="feature-card">
           <div class="feature-icon">⚽</div>
-          <h3>Clubs & Squads</h3>
-          <p>Every club's full roster, coach info, and nationality breakdown — filterable by competition.</p>
-          <span class="feature-link">Explore teams &rarr;</span>
+          <h3>{{ $t('home.features.teams.title') }}</h3>
+          <p>{{ $t('home.features.teams.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.teams.link') }} &rarr;</span>
         </RouterLink>
 
         <RouterLink to="/players" class="feature-card">
           <div class="feature-icon">👤</div>
-          <h3>Player Profiles</h3>
-          <p>Search players by position, age, and club. View career stats and current season performance.</p>
-          <span class="feature-link">Find players &rarr;</span>
+          <h3>{{ $t('home.features.players.title') }}</h3>
+          <p>{{ $t('home.features.players.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.players.link') }} &rarr;</span>
         </RouterLink>
 
         <RouterLink to="/matches" class="feature-card">
           <div class="feature-icon">📅</div>
-          <h3>Match Results</h3>
-          <p>Browse and filter every match result. Filter by team, date, or outcome in seconds.</p>
-          <span class="feature-link">View matches &rarr;</span>
+          <h3>{{ $t('home.features.matches.title') }}</h3>
+          <p>{{ $t('home.features.matches.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.matches.link') }} &rarr;</span>
         </RouterLink>
 
         <RouterLink to="/table" class="feature-card">
           <div class="feature-icon">📊</div>
-          <h3>Live Standings</h3>
-          <p>Up-to-date league tables with points, goal difference, form, and promotion/relegation zones.</p>
-          <span class="feature-link">See table &rarr;</span>
+          <h3>{{ $t('home.features.table.title') }}</h3>
+          <p>{{ $t('home.features.table.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.table.link') }} &rarr;</span>
         </RouterLink>
 
         <RouterLink to="/dashboard" class="feature-card">
           <div class="feature-icon">⭐</div>
-          <h3>Your Dashboard</h3>
-          <p>Save favourite teams and players. Get a personalised view every time you log in.</p>
-          <span class="feature-link">Go to dashboard &rarr;</span>
+          <h3>{{ $t('home.features.favs.title') }}</h3>
+          <p>{{ $t('home.features.favs.desc') }}</p>
+          <span class="feature-link">{{ $t('home.features.favs.link') }} &rarr;</span>
         </RouterLink>
       </div>
     </section>
@@ -172,10 +169,10 @@
     <section class="section">
       <div class="section-header">
         <div>
-          <h2 class="section-title">Competitions we cover</h2>
-          <p class="section-desc">Click any league to jump straight into its stats</p>
+          <h2 class="section-title">{{ $t('home.competitionsTitle') }}</h2>
+          <p class="section-desc">{{ $t('home.competitionsDesc') }}</p>
         </div>
-        <RouterLink to="/leagues" class="section-link">All leagues &rarr;</RouterLink>
+        <RouterLink to="/leagues" class="section-link">{{ $t('home.allLeagues') }} &rarr;</RouterLink>
       </div>
 
       <div class="competitions-grid">
@@ -199,11 +196,11 @@
     <section v-if="!user" class="cta-section">
       <div class="cta-glow"></div>
       <div class="cta-content">
-        <h2 class="cta-title">Ready to dive in?</h2>
-        <p class="cta-sub">Create a free account to save favourites and personalise your experience.</p>
+        <h2 class="cta-title">{{ $t('home.ctaTitle') }}</h2>
+        <p class="cta-sub">{{ $t('home.ctaSub') }}</p>
         <div class="cta-btns">
-          <RouterLink to="/register" class="btn-primary">Get Started — It's Free</RouterLink>
-          <RouterLink to="/leagues" class="btn-ghost">Browse as Guest &rarr;</RouterLink>
+          <RouterLink to="/register" class="btn-primary">{{ $t('home.ctaStart') }}</RouterLink>
+          <RouterLink to="/leagues" class="btn-ghost">{{ $t('home.ctaGuest') }} &rarr;</RouterLink>
         </div>
       </div>
     </section>
@@ -215,7 +212,10 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const store = useStore()
 const user = computed(() => store.state.user)

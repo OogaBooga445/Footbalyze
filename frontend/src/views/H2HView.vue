@@ -4,8 +4,8 @@
     <!-- ── Step 1: League picker ─────────────────────────────────────────── -->
     <template v-if="!selectedLeague">
       <div class="page-header">
-        <h1>Head-to-Head</h1>
-        <p class="page-sub">Pick a competition to compare two clubs</p>
+        <h1>{{ $t('h2h.title') }}</h1>
+        <p class="page-sub">{{ $t('h2h.sub') }}</p>
       </div>
       <div class="league-grid">
         <button v-for="league in leagues" :key="league.code" class="league-card" @click="pickLeague(league)">
@@ -22,29 +22,29 @@
     <!-- ── Step 2 & 3 ─────────────────────────────────────────────────────── -->
     <template v-else>
       <div class="page-header">
-        <button class="back-btn" @click="reset">← All Leagues</button>
+        <button class="back-btn" @click="reset">{{ $t('common.allLeagues') }}</button>
         <h1><span class="header-flag">{{ selectedLeague.flag }}</span>{{ selectedLeague.name }}</h1>
-        <p class="page-sub">Select two clubs to compare</p>
+        <p class="page-sub">{{ $t('h2h.selectTwo') }}</p>
       </div>
 
-      <div v-if="teamsLoading" class="loading">Loading clubs...</div>
+      <div v-if="teamsLoading" class="loading">{{ $t('h2h.loadingClubs') }}</div>
 
       <template v-else>
 
         <!-- Team pickers -->
         <div class="pickers-row">
           <div class="picker-panel" :class="{ 'picker-panel--done': team1 }">
-            <div class="picker-label">{{ team1 ? team1.Team_Name : 'Club 1' }}</div>
+            <div class="picker-label">{{ team1 ? team1.Team_Name : $t('h2h.club1') }}</div>
             <img v-if="team1" :src="team1.Crest" class="picker-crest-selected" :alt="team1.Team_Name" />
-            <button v-if="team1" class="picker-clear" @click="team1 = null; result = null">Change</button>
+            <button v-if="team1" class="picker-clear" @click="team1 = null; result = null">{{ $t('h2h.change') }}</button>
           </div>
 
           <div class="vs-divider">VS</div>
 
           <div class="picker-panel" :class="{ 'picker-panel--done': team2 }">
-            <div class="picker-label">{{ team2 ? team2.Team_Name : 'Club 2' }}</div>
+            <div class="picker-label">{{ team2 ? team2.Team_Name : $t('h2h.club2') }}</div>
             <img v-if="team2" :src="team2.Crest" class="picker-crest-selected" :alt="team2.Team_Name" />
-            <button v-if="team2" class="picker-clear" @click="team2 = null; result = null">Change</button>
+            <button v-if="team2" class="picker-clear" @click="team2 = null; result = null">{{ $t('h2h.change') }}</button>
           </div>
         </div>
 
@@ -66,7 +66,7 @@
         </div>
 
         <!-- Load H2H once both picked -->
-        <div v-if="team1 && team2 && h2hLoading" class="loading">Loading head-to-head...</div>
+        <div v-if="team1 && team2 && h2hLoading" class="loading">{{ $t('h2h.loading') }}</div>
 
         <!-- ── H2H Result ──────────────────────────────────────────────────── -->
         <template v-if="result && !h2hLoading">
@@ -80,15 +80,15 @@
             <div class="rb-stats">
               <div class="rb-stat rb-stat--win">
                 <span class="rb-val">{{ result.record.team1Wins }}</span>
-                <span class="rb-lbl">Wins</span>
+                <span class="rb-lbl">{{ $t('h2h.wins') }}</span>
               </div>
               <div class="rb-stat rb-stat--draw">
                 <span class="rb-val">{{ result.record.draws }}</span>
-                <span class="rb-lbl">Draws</span>
+                <span class="rb-lbl">{{ $t('h2h.draws') }}</span>
               </div>
               <div class="rb-stat rb-stat--win">
                 <span class="rb-val">{{ result.record.team2Wins }}</span>
-                <span class="rb-lbl">Wins</span>
+                <span class="rb-lbl">{{ $t('h2h.wins') }}</span>
               </div>
             </div>
             <div class="rb-side rb-side--right">
@@ -115,7 +115,7 @@
 
           <!-- Match history -->
           <div v-if="result.meetings.length" class="meetings-section">
-            <h2 class="meetings-title">Season Meetings</h2>
+            <h2 class="meetings-title">{{ $t('h2h.seasonMeetings') }}</h2>
             <div class="meetings-list">
               <div v-for="m in result.meetings" :key="m.Match_ID" class="meeting-row">
                 <span class="meeting-date">{{ formatDate(m.MatchDate) }}</span>
@@ -131,7 +131,7 @@
             </div>
           </div>
 
-          <p v-else class="empty-state">These teams haven't met in this competition this season.</p>
+          <p v-else class="empty-state">{{ $t('h2h.noMeetings') }}</p>
 
         </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="not-found">
     <h1 class="nf-code">404</h1>
-    <p class="nf-msg">Page not found.</p>
-    <RouterLink to="/" class="nf-home">Go home</RouterLink>
+    <p class="nf-msg">{{ $t('notFound.msg') }}</p>
+    <RouterLink to="/" class="nf-home">{{ $t('notFound.home') }}</RouterLink>
   </div>
 </template>
 

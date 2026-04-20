@@ -1,16 +1,16 @@
 <template>
   <div class="settings-page">
     <div class="settings-card">
-      <h1 class="settings-title">Account Settings</h1>
+      <h1 class="settings-title">{{ $t('settings.title') }}</h1>
 
-      <div v-if="saved" class="banner success">Changes saved successfully.</div>
+      <div v-if="saved" class="banner success">{{ $t('settings.saved') }}</div>
       <div v-if="serverError" class="banner error">{{ serverError }}</div>
 
       <form @submit.prevent="save" novalidate>
 
         <!-- Display name -->
         <div class="field-group">
-          <label class="field-label">Display name</label>
+          <label class="field-label">{{ $t('settings.displayName') }}</label>
           <input
             v-model="form.username"
             type="text"
@@ -23,7 +23,7 @@
 
         <!-- New password -->
         <div class="field-group">
-          <label class="field-label">New password <span class="optional">(leave blank to keep current)</span></label>
+          <label class="field-label">{{ $t('settings.newPassword') }} <span class="optional">{{ $t('settings.newPasswordHint') }}</span></label>
           <input
             v-model="form.newPassword"
             type="password"
@@ -39,22 +39,22 @@
 
         <!-- Current password — always required -->
         <div class="field-group">
-          <label class="field-label">Current password <span class="required">*</span></label>
+          <label class="field-label">{{ $t('settings.currentPassword') }} <span class="required">*</span></label>
           <input
             v-model="form.currentPassword"
             type="password"
             class="field-input"
             :class="{ invalid: errors.currentPassword }"
             autocomplete="current-password"
-            placeholder="Required to save any changes"
+            :placeholder="$t('settings.currentPasswordPlaceholder')"
           />
           <p v-if="errors.currentPassword" class="field-error">{{ errors.currentPassword }}</p>
         </div>
 
         <div class="form-actions">
-          <RouterLink to="/account" class="btn-cancel">Cancel</RouterLink>
+          <RouterLink to="/account" class="btn-cancel">{{ $t('settings.cancel') }}</RouterLink>
           <button type="submit" class="btn-save" :disabled="saving">
-            {{ saving ? 'Saving…' : 'Save changes' }}
+            {{ saving ? $t('settings.saving') : $t('settings.save') }}
           </button>
         </div>
 
@@ -66,9 +66,11 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 
 const store = useStore()
+const { t } = useI18n()
 
 const form = reactive({
   username: '',
@@ -87,17 +89,17 @@ onMounted(() => {
 function validate() {
   const e = {}
   if (!form.username.trim())
-    e.username = 'Display name cannot be empty.'
+    e.username = t('settings.errEmpty')
   else if (form.username.length < 3 || form.username.length > 20)
-    e.username = 'Must be 3–20 characters.'
+    e.username = t('settings.err320')
   else if (!/^[a-zA-Z0-9_]+$/.test(form.username))
-    e.username = 'Letters, numbers, and underscores only.'
+    e.username = t('settings.errAlpha')
 
   if (form.newPassword && (form.newPassword.length < 8 || !/[A-Z]/.test(form.newPassword) || !/[0-9]/.test(form.newPassword)))
-    e.newPassword = 'New password must be 8+ characters with an uppercase letter and a number.'
+    e.newPassword = t('settings.errPassword')
 
   if (!form.currentPassword)
-    e.currentPassword = 'Current password is required.'
+    e.currentPassword = t('settings.errCurrentRequired')
 
   errors.value = e
   return !Object.keys(e).length

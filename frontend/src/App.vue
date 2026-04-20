@@ -6,33 +6,35 @@
 
         <!-- Desktop nav -->
         <nav class="navbar desktop-nav">
-          <RouterLink to="/" class="nav-link">Home</RouterLink>
-          <RouterLink to="/teams" class="nav-link">Teams</RouterLink>
-          <RouterLink to="/table" class="nav-link">Table</RouterLink>
-          <RouterLink to="/leagues" class="nav-link">Leagues</RouterLink>
-          <RouterLink to="/matches" class="nav-link">Matches</RouterLink>
-          <RouterLink to="/players" class="nav-link">Players</RouterLink>
-          <RouterLink to="/h2h" class="nav-link">H2H</RouterLink>
-          <RouterLink to="/leaderboard" class="nav-link">Leaderboard</RouterLink>
-          <RouterLink v-if="isLoggedIn" to="/dashboard" class="nav-link">Dashboard</RouterLink>
+          <RouterLink to="/" class="nav-link">{{ $t('nav.home') }}</RouterLink>
+          <RouterLink to="/teams" class="nav-link">{{ $t('nav.teams') }}</RouterLink>
+          <RouterLink to="/table" class="nav-link">{{ $t('nav.table') }}</RouterLink>
+          <RouterLink to="/leagues" class="nav-link">{{ $t('nav.leagues') }}</RouterLink>
+          <RouterLink to="/matches" class="nav-link">{{ $t('nav.matches') }}</RouterLink>
+          <RouterLink to="/players" class="nav-link">{{ $t('nav.players') }}</RouterLink>
+          <RouterLink to="/h2h" class="nav-link">{{ $t('nav.h2h') }}</RouterLink>
+          <RouterLink to="/leaderboard" class="nav-link">{{ $t('nav.leaderboard') }}</RouterLink>
+          <RouterLink v-if="isLoggedIn" to="/dashboard" class="nav-link">{{ $t('nav.dashboard') }}</RouterLink>
 
           <SearchBar />
 
+          <button class="lang-toggle" @click="toggleLocale">{{ locale === 'en' ? 'LV' : 'EN' }}</button>
+
           <div class="account-dropdown-wrapper">
             <button class="account-btn" @click="onAccountClick">
-              {{ isLoggedIn ? user.username : 'Account' }}
+              {{ isLoggedIn ? user.username : $t('nav.account') }}
             </button>
 
             <div v-if="showDropdown" class="dropdown-menu">
               <template v-if="!isLoggedIn">
-                <button class="dropdown-item" @click="loginClick">Login</button>
-                <button class="dropdown-item" @click="registerClick">Register</button>
+                <button class="dropdown-item" @click="loginClick">{{ $t('nav.login') }}</button>
+                <button class="dropdown-item" @click="registerClick">{{ $t('nav.register') }}</button>
               </template>
               <template v-else>
-                <RouterLink class="dropdown-item" to="/account" @click="showDropdown = false">My Account</RouterLink>
-                <RouterLink class="dropdown-item" to="/settings" @click="showDropdown = false">Settings</RouterLink>
-                <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" class="dropdown-item dropdown-item--admin" to="/admin" @click="showDropdown = false">Admin Panel</RouterLink>
-                <button class="dropdown-item dropdown-item--danger" @click="logout">Logout</button>
+                <RouterLink class="dropdown-item" to="/account" @click="showDropdown = false">{{ $t('nav.myAccount') }}</RouterLink>
+                <RouterLink class="dropdown-item" to="/settings" @click="showDropdown = false">{{ $t('nav.settings') }}</RouterLink>
+                <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" class="dropdown-item dropdown-item--admin" to="/admin" @click="showDropdown = false">{{ $t('nav.adminPanel') }}</RouterLink>
+                <button class="dropdown-item dropdown-item--danger" @click="logout">{{ $t('nav.logout') }}</button>
               </template>
             </div>
           </div>
@@ -51,28 +53,31 @@
 
       <!-- Mobile drawer -->
       <nav v-if="menuOpen" class="mobile-drawer">
-        <RouterLink to="/" class="mob-link" @click="closeMenu">Home</RouterLink>
-        <RouterLink to="/teams" class="mob-link" @click="closeMenu">Teams</RouterLink>
-        <RouterLink to="/table" class="mob-link" @click="closeMenu">Table</RouterLink>
-        <RouterLink to="/leagues" class="mob-link" @click="closeMenu">Leagues</RouterLink>
-        <RouterLink to="/matches" class="mob-link" @click="closeMenu">Matches</RouterLink>
-        <RouterLink to="/players" class="mob-link" @click="closeMenu">Players</RouterLink>
-        <RouterLink to="/h2h" class="mob-link" @click="closeMenu">H2H</RouterLink>
-        <RouterLink to="/leaderboard" class="mob-link" @click="closeMenu">Leaderboard</RouterLink>
+        <RouterLink to="/" class="mob-link" @click="closeMenu">{{ $t('nav.home') }}</RouterLink>
+        <RouterLink to="/teams" class="mob-link" @click="closeMenu">{{ $t('nav.teams') }}</RouterLink>
+        <RouterLink to="/table" class="mob-link" @click="closeMenu">{{ $t('nav.table') }}</RouterLink>
+        <RouterLink to="/leagues" class="mob-link" @click="closeMenu">{{ $t('nav.leagues') }}</RouterLink>
+        <RouterLink to="/matches" class="mob-link" @click="closeMenu">{{ $t('nav.matches') }}</RouterLink>
+        <RouterLink to="/players" class="mob-link" @click="closeMenu">{{ $t('nav.players') }}</RouterLink>
+        <RouterLink to="/h2h" class="mob-link" @click="closeMenu">{{ $t('nav.h2h') }}</RouterLink>
+        <RouterLink to="/leaderboard" class="mob-link" @click="closeMenu">{{ $t('nav.leaderboard') }}</RouterLink>
 
         <div class="mob-divider"></div>
 
         <template v-if="!isLoggedIn">
-          <RouterLink to="/login" class="mob-link" @click="closeMenu">Login</RouterLink>
-          <RouterLink to="/register" class="mob-link" @click="closeMenu">Register</RouterLink>
+          <RouterLink to="/login" class="mob-link" @click="closeMenu">{{ $t('nav.login') }}</RouterLink>
+          <RouterLink to="/register" class="mob-link" @click="closeMenu">{{ $t('nav.register') }}</RouterLink>
         </template>
         <template v-else>
-          <RouterLink to="/account" class="mob-link" @click="closeMenu">My Account</RouterLink>
-          <RouterLink to="/dashboard" class="mob-link" @click="closeMenu">Dashboard</RouterLink>
-          <RouterLink to="/settings" class="mob-link" @click="closeMenu">Settings</RouterLink>
-          <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" to="/admin" class="mob-link mob-link--admin" @click="closeMenu">Admin Panel</RouterLink>
-          <button class="mob-link mob-link--danger" @click="logoutMobile">Logout</button>
+          <RouterLink to="/account" class="mob-link" @click="closeMenu">{{ $t('nav.myAccount') }}</RouterLink>
+          <RouterLink to="/dashboard" class="mob-link" @click="closeMenu">{{ $t('nav.dashboard') }}</RouterLink>
+          <RouterLink to="/settings" class="mob-link" @click="closeMenu">{{ $t('nav.settings') }}</RouterLink>
+          <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" to="/admin" class="mob-link mob-link--admin" @click="closeMenu">{{ $t('nav.adminPanel') }}</RouterLink>
+          <button class="mob-link mob-link--danger" @click="logoutMobile">{{ $t('nav.logout') }}</button>
         </template>
+
+        <div class="mob-divider"></div>
+        <button class="mob-link" @click="toggleLocale">{{ locale === 'en' ? '🌐 Latviski' : '🌐 English' }}</button>
       </nav>
     </header>
 
@@ -86,11 +91,18 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import SearchBar from './components/SearchBar.vue'
 
 const store = useStore()
 const router = useRouter()
 const route  = useRoute()
+const { locale } = useI18n()
+
+function toggleLocale() {
+  locale.value = locale.value === 'en' ? 'lv' : 'en'
+  localStorage.setItem('locale', locale.value)
+}
 
 const isLoggedIn = computed(() => !!store.state.user)
 const user = computed(() => store.state.user)
@@ -213,6 +225,23 @@ onBeforeUnmount(() => {
   height: 2px;
   background: var(--accent-green);
   border-radius: 1px;
+}
+
+.lang-toggle {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  letter-spacing: 0.03em;
+}
+.lang-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-green);
 }
 
 .account-btn {

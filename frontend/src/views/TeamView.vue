@@ -2,10 +2,10 @@
   <div class="view-container">
 
     <!-- Back link -->
-    <RouterLink to="/teams" class="back-link">← All Teams</RouterLink>
+    <RouterLink to="/teams" class="back-link">{{ $t('common.allTeams') }}</RouterLink>
 
     <!-- Loading -->
-    <div v-if="loading" class="loading">Loading squad...</div>
+    <div v-if="loading" class="loading">{{ $t('teamDetails.loading') }}</div>
 
     <!-- Error -->
     <div v-else-if="error" class="error-state">{{ error }}</div>
@@ -27,7 +27,7 @@
 
           <!-- Recent form -->
           <div v-if="team.recentMatches && team.recentMatches.length" class="form-row">
-            <span class="form-label">Form</span>
+            <span class="form-label">{{ $t('common.form') }}</span>
             <div class="form-pills">
               <span
                 v-for="m in [...team.recentMatches].reverse()"
@@ -47,12 +47,12 @@
           class="main-tab"
           :class="{ active: mainTab === 'squad' }"
           @click="mainTab = 'squad'"
-        >Squad</button>
+        >{{ $t('teamDetails.squad') }}</button>
         <button
           class="main-tab"
           :class="{ active: mainTab === 'stats' }"
           @click="mainTab = 'stats'"
-        >Stats</button>
+        >{{ $t('teamDetails.stats') }}</button>
       </div>
 
       <!-- ══════════ SQUAD TAB ══════════════════════════════════════════════ -->
@@ -60,7 +60,7 @@
 
         <!-- Recent matches -->
         <div v-if="team.recentMatches && team.recentMatches.length" class="recent-section">
-          <h2 class="recent-title">Recent Matches</h2>
+          <h2 class="recent-title">{{ $t('teamDetails.recentMatches') }}</h2>
           <div class="recent-list">
             <div
               v-for="m in team.recentMatches"
@@ -129,7 +129,7 @@
       <template v-else-if="mainTab === 'stats'">
 
         <p v-if="!team.tableRow && (!team.recentMatches || !team.recentMatches.length)" class="no-stats">
-          No match data available yet.
+          {{ $t('teamDetails.noData') }}
         </p>
 
         <template v-else>
@@ -140,27 +140,27 @@
             <div class="stat-grid">
               <div class="stat-card stat-card--played">
                 <span class="stat-value">{{ team.tableRow.P }}</span>
-                <span class="stat-label">Played</span>
+                <span class="stat-label">{{ $t('teamDetails.played') }}</span>
               </div>
               <div class="stat-card stat-card--win">
                 <span class="stat-value">{{ team.tableRow.W }}</span>
-                <span class="stat-label">Wins</span>
+                <span class="stat-label">{{ $t('teamDetails.wins') }}</span>
               </div>
               <div class="stat-card stat-card--draw">
                 <span class="stat-value">{{ team.tableRow.D }}</span>
-                <span class="stat-label">Draws</span>
+                <span class="stat-label">{{ $t('teamDetails.draws') }}</span>
               </div>
               <div class="stat-card stat-card--loss">
                 <span class="stat-value">{{ team.tableRow.L }}</span>
-                <span class="stat-label">Losses</span>
+                <span class="stat-label">{{ $t('teamDetails.losses') }}</span>
               </div>
               <div class="stat-card stat-card--gf">
                 <span class="stat-value">{{ team.tableRow.GF }}</span>
-                <span class="stat-label">Goals Scored</span>
+                <span class="stat-label">{{ $t('teamDetails.goalsScored') }}</span>
               </div>
               <div class="stat-card stat-card--ga">
                 <span class="stat-value">{{ team.tableRow.GA }}</span>
-                <span class="stat-label">Goals Conceded</span>
+                <span class="stat-label">{{ $t('teamDetails.goalsConceded') }}</span>
               </div>
             </div>
 
@@ -168,18 +168,18 @@
             <div class="highlight-row">
               <div class="highlight-card">
                 <span class="highlight-value">{{ team.tableRow.Pts }}</span>
-                <span class="highlight-label">Points</span>
+                <span class="highlight-label">{{ $t('teamDetails.points') }}</span>
               </div>
               <div class="highlight-card highlight-card--gd" :class="team.tableRow.GD > 0 ? 'positive' : team.tableRow.GD < 0 ? 'negative' : ''">
                 <span class="highlight-value">{{ team.tableRow.GD > 0 ? '+' : '' }}{{ team.tableRow.GD }}</span>
-                <span class="highlight-label">Goal Difference</span>
+                <span class="highlight-label">{{ $t('teamDetails.goalDiff') }}</span>
               </div>
             </div>
           </template>
 
           <!-- Last 5 form bar -->
           <div v-if="last5.length" class="form-section">
-            <h2 class="stats-section-title">Last {{ last5.length }} Results</h2>
+            <h2 class="stats-section-title">{{ $t('teamDetails.last5', { n: last5.length }) }}</h2>
             <div class="form-bar">
               <div
                 v-for="(m, i) in last5"
@@ -205,30 +205,32 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
 import { nationalityFlag, posClass, posAbbr } from '../utils/football'
 
 const route = useRoute()
+const { t } = useI18n()
 const team = ref(null)
 const loading = ref(true)
 const error = ref('')
 const activePos = ref('all')
 const mainTab = ref('squad')
 
-const positionGroups = [
-  { value: 'all',        label: 'All',        cls: 'all' },
-  { value: 'Goalkeeper', label: 'Goalkeepers', cls: 'gk' },
-  { value: 'Defender',   label: 'Defenders',   cls: 'def' },
-  { value: 'Midfielder', label: 'Midfielders', cls: 'mid' },
-  { value: 'Forward',    label: 'Forwards',    cls: 'fwd' },
-]
+const positionGroups = computed(() => [
+  { value: 'all',        label: t('teamDetails.all'),        cls: 'all' },
+  { value: 'Goalkeeper', label: t('teamDetails.goalkeepers'), cls: 'gk' },
+  { value: 'Defender',   label: t('teamDetails.defenders'),   cls: 'def' },
+  { value: 'Midfielder', label: t('teamDetails.midfielders'), cls: 'mid' },
+  { value: 'Forward',    label: t('teamDetails.forwards'),    cls: 'fwd' },
+])
 
 onMounted(async () => {
   try {
     const res = await api.get(`/teams/${route.params.id}`)
     team.value = res.data
   } catch (e) {
-    error.value = e.response?.status === 404 ? 'Team not found.' : 'Failed to load team.'
+    error.value = e.response?.status === 404 ? t('teamDetails.notFound') : t('teamDetails.loadError')
   } finally {
     loading.value = false
   }
@@ -253,9 +255,10 @@ function groupCount(posValue) {
   return team.value.players.filter(p => p.Position === posValue).length
 }
 
+
 const visibleGroups = computed(() => {
   if (!team.value) return []
-  const groups = positionGroups.filter(g => g.value !== 'all')
+  const groups = positionGroups.value.filter(g => g.value !== 'all')
   return groups
     .map(g => ({
       ...g,

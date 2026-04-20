@@ -7,8 +7,8 @@
       <!-- ── Top Scorers Spotlight ──────────────────────────────────────── -->
       <section class="spotlight">
         <div class="section-header">
-          <h2 class="section-title">Top Scorers Spotlight</h2>
-          <p class="section-sub">Goals leaders across featured competitions</p>
+          <h2 class="section-title">{{ $t('players.spotlightTitle') }}</h2>
+          <p class="section-sub">{{ $t('players.spotlightSub') }}</p>
         </div>
 
         <!-- Tab strip -->
@@ -30,7 +30,7 @@
         <!-- Scorers list -->
         <div class="scorers-panel">
           <div v-if="scorersLoading" class="scorers-loading">
-            Loading scorers...
+            {{ $t('players.loadingScorers') }}
           </div>
           <ul v-else-if="activeScorers.length" class="scorers-list">
             <li
@@ -52,19 +52,19 @@
               </div>
             </li>
           </ul>
-          <p v-else class="scorers-empty">No scorer data available.</p>
+          <p v-else class="scorers-empty">{{ $t('players.noScorers') }}</p>
         </div>
       </section>
 
       <!-- ── Browse Squads ──────────────────────────────────────────────── -->
       <section class="browse-section">
         <div class="browse-header">
-          <h2 class="section-title">Browse Squads</h2>
+          <h2 class="section-title">{{ $t('players.browseSquads') }}</h2>
           <hr class="section-rule" />
         </div>
-        <p class="section-sub browse-sub">Select a competition to view its clubs</p>
+        <p class="section-sub browse-sub">{{ $t('players.browseSub') }}</p>
 
-        <div v-if="leaguesLoading" class="loading">Loading competitions...</div>
+        <div v-if="leaguesLoading" class="loading">{{ $t('players.loadingComps') }}</div>
         <div v-else class="league-grid">
           <button
             v-for="league in leagues"
@@ -88,16 +88,16 @@
     <template v-else>
       <div class="page-header">
         <div>
-          <button class="back-btn" @click="clearLeague">← All Leagues</button>
+          <button class="back-btn" @click="clearLeague">{{ $t('common.allLeagues') }}</button>
           <h1>
             <span class="header-flag">{{ selectedLeague.flag }}</span>
             {{ selectedLeague.name }}
           </h1>
-          <p class="page-sub">Select a team to view their squad</p>
+          <p class="page-sub">{{ $t('players.selectTeamSub') }}</p>
         </div>
       </div>
 
-      <div v-if="teamsLoading" class="loading">Loading clubs...</div>
+      <div v-if="teamsLoading" class="loading">{{ $t('players.loadingClubs') }}</div>
 
       <div v-else>
         <ul v-if="teams.length" class="card-grid">
@@ -117,7 +117,7 @@
             </div>
           </li>
         </ul>
-        <p v-else class="empty-state">No clubs found for this competition.</p>
+        <p v-else class="empty-state">{{ $t('players.noClubs') }}</p>
       </div>
     </template>
 

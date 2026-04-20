@@ -2,48 +2,48 @@
   <div class="lb-page">
 
     <div class="page-header">
-      <h1>Prediction Leaderboard</h1>
-      <p class="page-sub">Ranked by points — 3pts for exact score, 1pt for correct result</p>
+      <h1>{{ $t('leaderboard.title') }}</h1>
+      <p class="page-sub">{{ $t('leaderboard.sub') }}</p>
     </div>
 
-    <div v-if="loading" class="loading">Loading leaderboard...</div>
+    <div v-if="loading" class="loading">{{ $t('leaderboard.loading') }}</div>
 
     <div v-else-if="!rows.length" class="empty-state">
       <div class="empty-icon">🏆</div>
-      <h2 class="empty-title">No results yet</h2>
-      <p class="empty-sub">The leaderboard will populate once predicted matches finish and outcomes are resolved.</p>
+      <h2 class="empty-title">{{ $t('leaderboard.noResults') }}</h2>
+      <p class="empty-sub">{{ $t('leaderboard.noResultsSub') }}</p>
 
       <div class="how-it-works">
-        <p class="how-label">How scoring works</p>
+        <p class="how-label">{{ $t('leaderboard.howTitle') }}</p>
         <div class="how-rows">
           <div class="how-row">
             <span class="how-icon exact">🎯</span>
             <div>
-              <strong>Exact score</strong>
-              <span class="how-pts">3 pts</span>
+              <strong>{{ $t('leaderboard.exact') }}</strong>
+              <span class="how-pts">{{ $t('leaderboard.exactPts') }}</span>
             </div>
-            <p class="how-desc">You predicted the precise final scoreline (e.g. 2–1)</p>
+            <p class="how-desc">{{ $t('leaderboard.exactDesc') }}</p>
           </div>
           <div class="how-row">
             <span class="how-icon correct">✓</span>
             <div>
-              <strong>Correct result</strong>
-              <span class="how-pts">1 pt</span>
+              <strong>{{ $t('leaderboard.correct') }}</strong>
+              <span class="how-pts">{{ $t('leaderboard.correctPts') }}</span>
             </div>
-            <p class="how-desc">Right outcome (win/draw/loss) but wrong score</p>
+            <p class="how-desc">{{ $t('leaderboard.correctDesc') }}</p>
           </div>
           <div class="how-row">
             <span class="how-icon wrong">✗</span>
             <div>
-              <strong>Wrong</strong>
-              <span class="how-pts">0 pts</span>
+              <strong>{{ $t('leaderboard.wrong') }}</strong>
+              <span class="how-pts">{{ $t('leaderboard.wrongPts') }}</span>
             </div>
-            <p class="how-desc">Incorrect outcome</p>
+            <p class="how-desc">{{ $t('leaderboard.wrongDesc') }}</p>
           </div>
         </div>
       </div>
 
-      <router-link to="/dashboard" class="cta-btn">Make predictions →</router-link>
+      <router-link to="/dashboard" class="cta-btn">{{ $t('leaderboard.makePredictions') }}</router-link>
     </div>
 
     <div v-else class="lb-card">
@@ -51,12 +51,12 @@
         <thead>
           <tr>
             <th class="col-rank">#</th>
-            <th>Player</th>
-            <th class="col-num col-hide-mobile" title="Total predictions with known results">Played</th>
-            <th class="col-num col-hide-mobile" title="Exact score">🎯 Exact</th>
-            <th class="col-num col-hide-mobile" title="Correct result">✓ Correct</th>
-            <th class="col-num col-hide-mobile" title="Wrong">✗ Wrong</th>
-            <th class="col-pts">Pts</th>
+            <th>{{ $t('leaderboard.player') }}</th>
+            <th class="col-num col-hide-mobile" title="Total predictions with known results">{{ $t('leaderboard.played') }}</th>
+            <th class="col-num col-hide-mobile" title="Exact score">🎯 {{ $t('leaderboardCols.exact') }}</th>
+            <th class="col-num col-hide-mobile" title="Correct result">✓ {{ $t('leaderboardCols.correct') }}</th>
+            <th class="col-num col-hide-mobile" title="Wrong">✗ {{ $t('leaderboardCols.wrong') }}</th>
+            <th class="col-pts">{{ $t('leaderboard.pts') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +71,7 @@
             <td>
               <div class="col-user">
                 <span class="lb-username">{{ row.Username }}</span>
-                <span v-if="row.Username === currentUsername" class="you-badge">you</span>
+                <span v-if="row.Username === currentUsername" class="you-badge">{{ $t('leaderboard.you') }}</span>
               </div>
             </td>
             <td class="col-num col-hide-mobile">{{ row.total }}</td>
