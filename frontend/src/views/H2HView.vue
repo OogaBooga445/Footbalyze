@@ -99,7 +99,7 @@
 
           <!-- Goals scored -->
           <div class="goals-bar-wrap">
-            <span class="goals-label">{{ result.record.team1Goals }} goals</span>
+            <span class="goals-label">{{ result.record.team1Goals }} {{ $t('common.goals') }}</span>
             <div class="goals-bar">
               <div
                 class="goals-fill goals-fill--1"
@@ -110,7 +110,7 @@
                 :style="{ width: goalsWidth(result.record.team2Goals) }"
               ></div>
             </div>
-            <span class="goals-label">{{ result.record.team2Goals }} goals</span>
+            <span class="goals-label">{{ result.record.team2Goals }} {{ $t('common.goals') }}</span>
           </div>
 
           <!-- Match history -->

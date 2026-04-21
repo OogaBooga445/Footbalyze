@@ -56,7 +56,7 @@
               <div class="hc-info">
                 <span class="hc-name">{{ leader?.name || '—' }}</span>
                 <div class="hc-stats-row">
-                  <span class="hc-chip hc-pts">{{ leader?.points }} pts</span>
+                  <span class="hc-chip hc-pts">{{ leader?.points }} {{ $t('common.pts') }}</span>
                   <span class="hc-chip hc-wdl">{{ leader?.won }}W {{ leader?.draw }}D {{ leader?.lost }}L</span>
                 </div>
               </div>
@@ -72,8 +72,8 @@
                 <span class="hc-name">{{ topScorer?.player?.name || '—' }}</span>
                 <span class="hc-subname">{{ topScorer?.team?.shortName || topScorer?.team?.name || '' }}</span>
                 <div class="hc-stats-row">
-                  <span class="hc-chip hc-goals">⚽ {{ topScorer?.goals ?? 0 }} goals</span>
-                  <span v-if="topScorer?.assists" class="hc-chip hc-assists">🅰 {{ topScorer.assists }} assists</span>
+                  <span class="hc-chip hc-goals">⚽ {{ topScorer?.goals ?? 0 }} {{ $t('common.goals') }}</span>
+                  <span v-if="topScorer?.assists" class="hc-chip hc-assists">🅰 {{ topScorer.assists }} {{ $t('common.assists') }}</span>
                 </div>
               </div>
             </div>
@@ -136,12 +136,12 @@
                 <div class="match-teams">
                   <div class="match-team home">
                     <img v-if="m.homeTeam?.crest" :src="m.homeTeam.crest" class="team-crest-img" />
-                    <span>{{ m.homeTeam?.shortName || m.homeTeam?.name || 'TBD' }}</span>
+                    <span>{{ m.homeTeam?.shortName || m.homeTeam?.name || $t('common.tbd') }}</span>
                   </div>
                   <span class="score-pill upcoming-pill">{{ formatTime(m.utcDate) }}</span>
                   <div class="match-team away">
                     <img v-if="m.awayTeam?.crest" :src="m.awayTeam.crest" class="team-crest-img" />
-                    <span>{{ m.awayTeam?.shortName || m.awayTeam?.name || 'TBD' }}</span>
+                    <span>{{ m.awayTeam?.shortName || m.awayTeam?.name || $t('common.tbd') }}</span>
                   </div>
                 </div>
               </div>
@@ -160,11 +160,11 @@
             <thead>
               <tr>
                 <th class="col-pos">#</th>
-                <th class="col-team">Club</th>
+                <th class="col-team">{{ $t('table.club') }}</th>
                 <th class="col-num" title="Played">P</th>
                 <th class="col-num" title="Won">W</th>
                 <th class="col-num" title="Goal Difference">GD</th>
-                <th class="col-pts">Pts</th>
+                <th class="col-pts">{{ $t('common.pts') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -247,24 +247,24 @@
                       :class="{ 'tie-finished': tie.status === 'FINISHED', 'tie-in-progress': tie.status === 'IN_PROGRESS' }"
                     >
                       <template v-if="!tie.team1?.name && !tie.team2?.name">
-                        <div class="tie-tbd">TBD</div>
+                        <div class="tie-tbd">{{ $t('common.tbd') }}</div>
                       </template>
                       <template v-else>
                         <div class="tie-team" :class="{ 'is-winner': tie.winner === 'team1', 'is-loser': tie.winner === 'team2' }">
                           <img v-if="tie.team1?.crest" :src="tie.team1.crest" class="tie-crest" />
                           <div v-else class="tie-avatar">{{ tie.team1?.shortName?.charAt(0) || '?' }}</div>
-                          <span class="tie-name">{{ tie.team1?.shortName || tie.team1?.name || 'TBD' }}</span>
+                          <span class="tie-name">{{ tie.team1?.shortName || tie.team1?.name || $t('common.tbd') }}</span>
                           <span v-if="tie.agg1 !== null" class="tie-agg" :class="{ 'agg-win': tie.winner === 'team1', 'agg-lose': tie.winner === 'team2' }">{{ tie.agg1 }}</span>
                         </div>
                         <div class="tie-middle">
                           <span v-if="tie.status === 'UPCOMING' && tie.nextDate" class="tie-date">{{ formatDate(tie.nextDate) }}</span>
-                          <span v-else-if="tie.agg1 !== null" class="tie-agg-label">agg</span>
+                          <span v-else-if="tie.agg1 !== null" class="tie-agg-label">{{ $t('common.agg') }}</span>
                           <span v-else class="tie-vs">vs</span>
                         </div>
                         <div class="tie-team" :class="{ 'is-winner': tie.winner === 'team2', 'is-loser': tie.winner === 'team1' }">
                           <img v-if="tie.team2?.crest" :src="tie.team2.crest" class="tie-crest" />
                           <div v-else class="tie-avatar">{{ tie.team2?.shortName?.charAt(0) || '?' }}</div>
-                          <span class="tie-name">{{ tie.team2?.shortName || tie.team2?.name || 'TBD' }}</span>
+                          <span class="tie-name">{{ tie.team2?.shortName || tie.team2?.name || $t('common.tbd') }}</span>
                           <span v-if="tie.agg2 !== null" class="tie-agg" :class="{ 'agg-win': tie.winner === 'team2', 'agg-lose': tie.winner === 'team1' }">{{ tie.agg2 }}</span>
                         </div>
                         <div v-if="tie.legs.length || (tie.status === 'IN_PROGRESS' && tie.nextDate)" class="tie-legs">
@@ -289,7 +289,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const leagues = ref([])
@@ -373,7 +376,7 @@ const seasonStats = computed(() => {
   const played = finished.length
   const gpg = played ? (totalGoals / played).toFixed(2) : '—'
   const stageOrder = ['LEAGUE_STAGE','PLAYOFFS','LAST_16','QUARTER_FINALS','SEMI_FINALS','FINAL']
-  const stageLabels = { LEAGUE_STAGE: 'League Phase', PLAYOFFS: 'Playoffs', LAST_16: 'Round of 16', QUARTER_FINALS: 'Quarter Finals', SEMI_FINALS: 'Semi Finals', FINAL: 'Final' }
+  const stageLabels = { LEAGUE_STAGE: t('leagues.stageLeaguePhase'), PLAYOFFS: t('leagues.stagePlayoffs'), LAST_16: t('leagues.stageLast16'), QUARTER_FINALS: t('leagues.stageQuarterFinals'), SEMI_FINALS: t('leagues.stageSemiFinals'), FINAL: t('leagues.stageFinal') }
   const latestFinished = [...finished].sort((a, b) => new Date(b.utcDate) - new Date(a.utcDate))[0]
   const latestStage = latestFinished?.stage
   const hasKnockout = finished.some(m => m.stage && m.stage !== 'LEAGUE_STAGE')
@@ -392,7 +395,7 @@ const seasonStats = computed(() => {
 // ── Knockout bracket (CL only) ────────────────────────────────────────────
 
 const BRACKET_STAGES = ['LAST_16', 'QUARTER_FINALS', 'SEMI_FINALS', 'FINAL']
-const BRACKET_LABELS = { LAST_16: 'Round of 16', QUARTER_FINALS: 'Quarter Finals', SEMI_FINALS: 'Semi Finals', FINAL: 'Final' }
+const BRACKET_LABELS = computed(() => ({ LAST_16: t('leagues.stageLast16'), QUARTER_FINALS: t('leagues.stageQuarterFinals'), SEMI_FINALS: t('leagues.stageSemiFinals'), FINAL: t('leagues.stageFinal') }))
 const BRACKET_COUNTS = { LAST_16: 8, QUARTER_FINALS: 4, SEMI_FINALS: 2, FINAL: 1 }
 
 const knockoutBracket = computed(() => {
@@ -404,9 +407,9 @@ const knockoutBracket = computed(() => {
 
     if (stage === 'FINAL') {
       const m = sm[0]
-      if (!m) return { stage, label: BRACKET_LABELS[stage], ties: [{ team1: null, team2: null, agg1: null, agg2: null, legs: [], winner: null, status: 'UPCOMING', nextDate: null }] }
+      if (!m) return { stage, label: BRACKET_LABELS.value[stage], ties: [{ team1: null, team2: null, agg1: null, agg2: null, legs: [], winner: null, status: 'UPCOMING', nextDate: null }] }
       return {
-        stage, label: BRACKET_LABELS[stage],
+        stage, label: BRACKET_LABELS.value[stage],
         ties: [{
           team1: m.homeTeam, team2: m.awayTeam,
           agg1: m.score?.fullTime?.home, agg2: m.score?.fullTime?.away,
@@ -464,7 +467,7 @@ const knockoutBracket = computed(() => {
       ties.push({ team1: null, team2: null, agg1: null, agg2: null, legs: [], winner: null, status: 'UPCOMING', nextDate: null })
     }
 
-    return { stage, label: BRACKET_LABELS[stage], ties }
+    return { stage, label: BRACKET_LABELS.value[stage], ties }
   })
 })
 

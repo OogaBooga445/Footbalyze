@@ -48,15 +48,15 @@
             <tr>
               <th class="col-pos">#</th>
               <th class="col-team">{{ $t('table.club') }}</th>
-              <th class="col-num" title="Played">P</th>
-              <th class="col-num" title="Won">W</th>
-              <th class="col-num" title="Drawn">D</th>
-              <th class="col-num" title="Lost">L</th>
-              <th class="col-num" title="Goals For">GF</th>
-              <th class="col-num" title="Goals Against">GA</th>
-              <th class="col-num" title="Goal Difference">GD</th>
-              <th class="col-pts" title="Points">Pts</th>
-              <th class="col-form" title="Last 5">Form</th>
+              <th class="col-num" :title="$t('table.colPlayed')">P</th>
+              <th class="col-num" :title="$t('table.colWon')">W</th>
+              <th class="col-num" :title="$t('table.colDrawn')">D</th>
+              <th class="col-num" :title="$t('table.colLost')">L</th>
+              <th class="col-num" :title="$t('table.colGF')">GF</th>
+              <th class="col-num" :title="$t('table.colGA')">GA</th>
+              <th class="col-num" :title="$t('table.colGD')">GD</th>
+              <th class="col-pts" :title="$t('table.colPts')">Pts</th>
+              <th class="col-form" :title="$t('table.colForm')">{{ $t('common.form') }}</th>
             </tr>
           </thead>
           <tbody>

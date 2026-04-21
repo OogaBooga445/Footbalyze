@@ -22,7 +22,7 @@
           <div class="header-meta">
             <span class="meta-pill"><span class="meta-icon">👤</span><span>{{ team.Coach_name || '—' }}</span><span v-if="team.Coach_nationality" class="pill-flag">{{ nationalityFlag(team.Coach_nationality) }}</span></span>
             <span class="meta-pill"><span class="meta-icon">🌍</span> {{ team.Country || '—' }}</span>
-            <span class="meta-pill accent-pill"><span class="meta-icon">👥</span> {{ team.players.length }} players</span>
+            <span class="meta-pill accent-pill"><span class="meta-icon">👥</span> {{ team.players.length }} {{ $t('common.players') }}</span>
           </div>
 
           <!-- Recent form -->
@@ -136,7 +136,7 @@
 
           <!-- Season stats from league table -->
           <template v-if="team.tableRow">
-            <h2 class="stats-section-title">2025/26 Season — {{ team.leagueName }}</h2>
+            <h2 class="stats-section-title">{{ $t('common.seasonWith', { league: team.leagueName }) }}</h2>
             <div class="stat-grid">
               <div class="stat-card stat-card--played">
                 <span class="stat-value">{{ team.tableRow.P }}</span>
