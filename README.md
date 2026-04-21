@@ -4,6 +4,8 @@ Football stats app covering 10 leagues — browse standings, teams, players and 
 
 Built with Vue 3 + Express + MySQL.
 
+**Live:** https://footbalyze.rvtdev.tech
+
 ---
 
 ## Before you start
