@@ -1150,9 +1150,24 @@ onMounted(async () => {
   if (!user.value) return
   await Promise.all([fetchTeams(), fetchPlayers(), fetchFavourites()])
   fetchTeamDetail(savedTeamId.value)
-  fetchPlayerStats(savedPlayerId.value)
-  const player = players.value.find(p => p.Player_ID === savedPlayerId.value)
-  fetchPlayerTeamDetail(player?.Team_ID || null)
+
+  if (savedPlayerId.value) {
+    let player = players.value.find(p => p.Player_ID === savedPlayerId.value)
+    if (!player) {
+      const favLeague = localStorage.getItem('favPlayerLeague')
+      if (favLeague && favLeague !== playerLeague.value) {
+        playerLeague.value = favLeague
+        await fetchPlayers(favLeague)
+        player = players.value.find(p => p.Player_ID === savedPlayerId.value)
+      }
+    }
+    fetchPlayerStats(savedPlayerId.value)
+    fetchPlayerTeamDetail(player?.Team_ID || null)
+  } else {
+    fetchPlayerStats(null)
+    fetchPlayerTeamDetail(null)
+  }
+
   await fetchPredictions()
   fetchWatchlist()
 })
