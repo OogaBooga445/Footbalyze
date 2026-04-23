@@ -1148,27 +1148,28 @@ async function fetchPredictions() {
 // ── Mount ─────────────────────────────────────────────────────────────────────
 onMounted(async () => {
   if (!user.value) return
-  await Promise.all([fetchTeams(), fetchPlayers(), fetchFavourites()])
+
+  // Load favourites first so the cards show immediately
+  await fetchFavourites()
   fetchTeamDetail(savedTeamId.value)
 
   if (savedPlayerId.value) {
-    let player = players.value.find(p => p.Player_ID === savedPlayerId.value)
-    if (!player) {
-      const favLeague = localStorage.getItem('favPlayerLeague')
-      if (favLeague && favLeague !== playerLeague.value) {
-        playerLeague.value = favLeague
-        await fetchPlayers(favLeague)
-        player = players.value.find(p => p.Player_ID === savedPlayerId.value)
-      }
-    }
+    const favLeague = localStorage.getItem('favPlayerLeague')
+    if (favLeague) playerLeague.value = favLeague
     fetchPlayerStats(savedPlayerId.value)
-    fetchPlayerTeamDetail(player?.Team_ID || null)
+    // Fetch player's team detail via their stored league
+    fetchPlayers(favLeague || playerLeague.value).then(() => {
+      const player = players.value.find(p => p.Player_ID === savedPlayerId.value)
+      fetchPlayerTeamDetail(player?.Team_ID || null)
+    })
   } else {
     fetchPlayerStats(null)
     fetchPlayerTeamDetail(null)
   }
 
-  await fetchPredictions()
+  // Load picker data and predictions in the background
+  fetchTeams()
+  fetchPredictions()
   fetchWatchlist()
 })
 </script>
