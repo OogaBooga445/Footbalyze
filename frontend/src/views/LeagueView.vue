@@ -738,12 +738,44 @@ h1 {
   margin-bottom: 1.5rem;
 }
 @media (max-width: 700px) { .fixtures-row { grid-template-columns: 1fr; } }
+@media (max-width: 520px) {
+  .fixtures-panel { padding: 0.875rem; }
+  .mini-table-wrap { padding: 0.875rem; }
+  .mini-table th,
+  .mini-table td { padding: 0.45rem 0.25rem; }
+  .col-team { min-width: unset !important; }
+  .col-num  { width: 28px; }
+  .col-pts  { width: 36px; }
+
+  .match-row { gap: 0.4rem; }
+
+  .match-md {
+    min-width: 34px;
+    font-size: 0.63rem;
+    flex-shrink: 0;
+  }
+  .match-teams {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .score-pill {
+    min-width: 40px;
+    font-size: 0.73rem;
+    padding: 0.15rem 0.35rem;
+  }
+  .match-team { min-width: 0; overflow: hidden; }
+  .match-team span { font-size: 0.76rem; }
+}
 
 .fixtures-panel {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .panel-title {
@@ -851,6 +883,8 @@ h1 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .mini-table {

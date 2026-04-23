@@ -239,7 +239,7 @@ const vFadeIn = {
           io.unobserve(el)
         }
       },
-      { threshold: 0.08 }
+      { threshold: 0, rootMargin: '0px 0px -40px 0px' }
     )
     io.observe(el)
   },
