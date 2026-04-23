@@ -225,18 +225,14 @@ function handleLogout() {
 /* ── Profile header ──────────────────────────────────────────────────────── */
 .profile-header {
   position: relative;
-  background: linear-gradient(180deg, rgba(16,185,129,0.06) 0%, transparent 100%);
-  border-bottom: 1px solid var(--border);
+  background: #141c27;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.12);
   overflow: hidden;
   padding: 2.5rem 1.5rem 2rem;
 }
 
 .header-glow {
-  position: absolute;
-  width: 400px; height: 200px;
-  background: radial-gradient(ellipse, rgba(16,185,129,0.15) 0%, transparent 70%);
-  top: -40px; left: -80px;
-  pointer-events: none;
+  display: none;
 }
 
 .header-inner {
@@ -265,14 +261,14 @@ function handleLogout() {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent) 100%);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 1.9rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 3px rgba(16,185,129,0.2), 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), 0 4px 20px rgba(0,0,0,0.4);
 }
 
 .avatar-img {
@@ -280,7 +276,7 @@ function handleLogout() {
   height: 72px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 0 3px rgba(16,185,129,0.2), 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), 0 4px 20px rgba(0,0,0,0.4);
   display: block;
 }
 
@@ -326,9 +322,9 @@ function handleLogout() {
   letter-spacing: 0.07em;
   padding: 2px 10px;
   border-radius: 999px;
-  background: rgba(16,185,129,0.1);
-  color: var(--accent-green-hover);
-  border: 1px solid rgba(16,185,129,0.25);
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 .role-badge.role-admin {
   background: rgba(59,130,246,0.1);
@@ -511,8 +507,8 @@ function handleLogout() {
   transition: border-color 0.15s, background 0.15s, transform 0.15s;
 }
 .nav-card:hover {
-  border-color: rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.03);
+  border-color: var(--border-hover);
+  background: var(--bg-surface-2);
   transform: translateY(-2px);
 }
 

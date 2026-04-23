@@ -560,17 +560,17 @@ h1 {
   gap: 0.85rem;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s, transform 0.15s, background 0.15s;
-  box-shadow: var(--shadow);
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
 .league-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
-  background: var(--bg-surface-2);
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
@@ -620,9 +620,9 @@ h1 {
 .highlight-card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
-  box-shadow: var(--shadow);
 }
 
 .hc-label {
@@ -651,8 +651,8 @@ h1 {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), #1d4ed8);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 1.3rem;
   font-weight: 800;
   display: flex;
@@ -662,7 +662,8 @@ h1 {
 }
 
 .scorer-avatar {
-  background: linear-gradient(135deg, #10b981, #065f46);
+  background: #f59e0b;
+  color: #0f1419;
 }
 
 .hc-info {
@@ -743,7 +744,6 @@ h1 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
-  box-shadow: var(--shadow);
 }
 
 .panel-title {
@@ -851,7 +851,6 @@ h1 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
-  box-shadow: var(--shadow);
 }
 
 .mini-table {
@@ -1157,6 +1156,7 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 }
 

@@ -205,19 +205,19 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s, transform 0.15s, background 0.15s;
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
 .league-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
-  transform: translateY(-3px);
-  background: rgba(12, 20, 35, 0.9);
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
@@ -276,7 +276,7 @@ h1 {
   transition: border-color 0.2s, background 0.2s;
 }
 .search-input::placeholder { color: var(--text-muted); }
-.search-input:focus { outline: none; border-color: var(--accent-green); background: rgba(16,185,129,0.04); }
+.search-input:focus { outline: none; border-color: rgba(245,158,11,0.6); background: rgba(245,158,11,0.04); }
 
 select {
   background: rgba(255, 255, 255, 0.06);
@@ -288,7 +288,7 @@ select {
   cursor: pointer;
   transition: border-color 0.2s;
 }
-select:focus { outline: none; border-color: var(--accent-green); }
+select:focus { outline: none; border-color: rgba(245,158,11,0.6); }
 select option {
   background: var(--bg-surface, #0f1117);
   color: var(--text-primary, #f1f5f9);
@@ -308,34 +308,29 @@ select option {
 
 /* ─── Team card ─────────────────────────────────────────────────────────── */
 .team-card {
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid transparent;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  transition: border-color 0.18s, border-top-color 0.18s, transform 0.15s;
   cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
 }
 .team-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(16, 185, 129, 0.1);
+  border-color: var(--border-hover);
+  border-top-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .card-banner {
-  height: 90px;
-  background: linear-gradient(135deg, #0c1e3d 0%, #152033 60%, #1e3050 100%);
+  height: 80px;
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-.card-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.12) 0%, transparent 65%);
 }
 
 .crest-img {
@@ -351,14 +346,13 @@ select option {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 1.6rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(59,130,246,0.4);
   position: relative;
   z-index: 1;
 }

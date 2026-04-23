@@ -296,19 +296,19 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s, transform 0.15s, background 0.15s;
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
 .league-card:hover {
-  border-color: rgba(16, 185, 129, 0.4);
-  transform: translateY(-3px);
-  background: rgba(12, 20, 35, 0.9);
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
@@ -354,10 +354,9 @@ h1 {
 
 /* ─── Table wrapper ─────────────────────────────────────────────────────── */
 .table-wrap {
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141c27;
+  border: 1px solid rgba(245, 158, 11, 0.12);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(8px);
   overflow-x: auto;
   overflow-y: hidden;
 }

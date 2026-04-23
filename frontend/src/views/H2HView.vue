@@ -314,13 +314,18 @@ h1 {
   gap: 0.85rem;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
-.league-card:hover { border-color: rgba(16,185,129,0.4); transform: translateY(-2px); }
+.league-card:hover {
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
+}
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
 .league-info { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
 .league-name { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); }
@@ -352,7 +357,7 @@ h1 {
 }
 
 .picker-panel--done {
-  border-color: rgba(16,185,129,0.35);
+  border-color: rgba(245,158,11,0.35);
 }
 
 .picker-label {
@@ -405,8 +410,8 @@ h1 {
   cursor: pointer;
   transition: border-color 0.15s, transform 0.15s;
 }
-.team-tile:hover { border-color: rgba(16,185,129,0.4); transform: translateY(-2px); }
-.team-tile--selected { border-color: var(--accent-green); background: rgba(16,185,129,0.06); }
+.team-tile:hover { border-color: rgba(245,158,11,0.4); transform: translateY(-2px); }
+.team-tile--selected { border-color: var(--accent-green); background: rgba(245,158,11,0.06); }
 .team-tile--disabled { opacity: 0.4; pointer-events: none; }
 
 .tile-crest {

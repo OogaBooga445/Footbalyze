@@ -312,7 +312,7 @@ function formResult(m) {
   gap: 0.3rem;
 }
 
-.stat-card--accent { border-color: rgba(16,185,129,0.3); }
+.stat-card--accent { border-color: rgba(245,158,11,0.3); }
 
 .stat-val {
   font-size: 2rem;

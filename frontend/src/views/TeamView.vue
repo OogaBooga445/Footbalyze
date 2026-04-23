@@ -310,28 +310,21 @@ const last5 = computed(() => {
   align-items: center;
   gap: 1.75rem;
   margin-bottom: 2rem;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(8px);
   overflow: hidden;
 }
 
 .header-banner {
-  width: 120px;
-  min-height: 110px;
+  width: 110px;
+  min-height: 100px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #0c1e3d 0%, #152033 60%, #1e3050 100%);
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-}
-.header-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 40% 50%, rgba(59,130,246,0.15) 0%, transparent 70%);
 }
 
 .header-crest-img {
@@ -347,14 +340,13 @@ const last5 = computed(() => {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 1.9rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(59,130,246,0.45);
   position: relative;
   z-index: 1;
 }
@@ -503,13 +495,13 @@ const last5 = computed(() => {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0.65rem 1rem;
   transition: border-color 0.15s, background 0.15s;
 }
-.player-row:hover { background: rgba(12, 20, 35, 0.9); }
+.player-row:hover { background: var(--bg-surface-2); }
 
 .row-gk:hover  { border-color: var(--pos-gk); }
 .row-def:hover { border-color: var(--pos-def); }

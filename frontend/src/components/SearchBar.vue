@@ -232,7 +232,7 @@ onBeforeUnmount(() => document.removeEventListener('mousedown', onClickOutside))
   .search-box { width: 160px; }
 }
 .search-box:focus-within {
-  border-color: rgba(16,185,129,0.5);
+  border-color: rgba(245, 158, 11, 0.5);
 }
 
 .search-icon {

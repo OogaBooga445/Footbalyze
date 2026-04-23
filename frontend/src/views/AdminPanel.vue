@@ -370,7 +370,7 @@ onMounted(fetchUsers)
 
 .users-table tbody tr:last-child td { border-bottom: none; }
 .users-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
-.row-self td { background: rgba(59,130,246,0.04); }
+.row-self td { background: rgba(245,158,11,0.04); }
 
 .col-id { color: var(--text-muted); font-size: 0.78rem; width: 50px; }
 .col-username { font-weight: 600; color: var(--text-primary); }
@@ -405,9 +405,9 @@ onMounted(fetchUsers)
   border-radius: 999px;
 }
 .role-badge--admin {
-  background: rgba(59,130,246,0.15);
+  background: rgba(245,158,11,0.12);
   color: var(--accent-hover);
-  border: 1px solid rgba(59,130,246,0.3);
+  border: 1px solid rgba(245,158,11,0.3);
 }
 .role-badge--user {
   background: var(--bg-surface-2);

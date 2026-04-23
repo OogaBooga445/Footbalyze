@@ -2,7 +2,9 @@
   <div id="app">
     <header class="app-header">
       <div class="header-inner">
-        <RouterLink to="/" class="brand" @click="closeMenu">Footbalyze</RouterLink>
+        <RouterLink to="/" class="brand" @click="closeMenu">
+          Footbalyze
+        </RouterLink>
 
         <!-- Desktop nav -->
         <nav class="navbar desktop-nav">
@@ -16,26 +18,28 @@
           <RouterLink to="/leaderboard" class="nav-link">{{ $t('nav.leaderboard') }}</RouterLink>
           <RouterLink v-if="isLoggedIn" to="/dashboard" class="nav-link">{{ $t('nav.dashboard') }}</RouterLink>
 
-          <SearchBar />
+          <div class="nav-utils">
+            <SearchBar />
 
-          <button class="lang-toggle" @click="toggleLocale">{{ locale === 'en' ? 'LV' : 'EN' }}</button>
+            <button class="lang-toggle" @click="toggleLocale">{{ locale === 'en' ? 'LV' : 'EN' }}</button>
 
-          <div class="account-dropdown-wrapper">
-            <button class="account-btn" @click="onAccountClick">
-              {{ isLoggedIn ? user.username : $t('nav.account') }}
-            </button>
+            <div class="account-dropdown-wrapper">
+              <button class="account-btn" @click="onAccountClick">
+                {{ isLoggedIn ? user.username : $t('nav.account') }}
+              </button>
 
-            <div v-if="showDropdown" class="dropdown-menu">
-              <template v-if="!isLoggedIn">
-                <button class="dropdown-item" @click="loginClick">{{ $t('nav.login') }}</button>
-                <button class="dropdown-item" @click="registerClick">{{ $t('nav.register') }}</button>
-              </template>
-              <template v-else>
-                <RouterLink class="dropdown-item" to="/account" @click="showDropdown = false">{{ $t('nav.myAccount') }}</RouterLink>
-                <RouterLink class="dropdown-item" to="/settings" @click="showDropdown = false">{{ $t('nav.settings') }}</RouterLink>
-                <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" class="dropdown-item dropdown-item--admin" to="/admin" @click="showDropdown = false">{{ $t('nav.adminPanel') }}</RouterLink>
-                <button class="dropdown-item dropdown-item--danger" @click="logout">{{ $t('nav.logout') }}</button>
-              </template>
+              <div v-if="showDropdown" class="dropdown-menu">
+                <template v-if="!isLoggedIn">
+                  <button class="dropdown-item" @click="loginClick">{{ $t('nav.login') }}</button>
+                  <button class="dropdown-item" @click="registerClick">{{ $t('nav.register') }}</button>
+                </template>
+                <template v-else>
+                  <RouterLink class="dropdown-item" to="/account" @click="showDropdown = false">{{ $t('nav.myAccount') }}</RouterLink>
+                  <RouterLink class="dropdown-item" to="/settings" @click="showDropdown = false">{{ $t('nav.settings') }}</RouterLink>
+                  <RouterLink v-if="user?.role?.toLowerCase() === 'admin'" class="dropdown-item dropdown-item--admin" to="/admin" @click="showDropdown = false">{{ $t('nav.adminPanel') }}</RouterLink>
+                  <button class="dropdown-item dropdown-item--danger" @click="logout">{{ $t('nav.logout') }}</button>
+                </template>
+              </div>
             </div>
           </div>
         </nav>
@@ -165,114 +169,134 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* ── Header shell ────────────────────────────────────────────────────────── */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(4, 8, 15, 0.75);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(15, 20, 25, 0.9);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.12);
   backdrop-filter: blur(20px);
+}
+
+/* Amber rule across the top */
+.app-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #f59e0b 30%, #fbbf24 50%, #f59e0b 70%, transparent 100%);
+  opacity: 0.7;
 }
 
 .header-inner {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
-  height: 60px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
+/* ── Brand ───────────────────────────────────────────────────────────────── */
 .brand {
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--accent-green-hover);
+  color: #f1f5f9;
   text-decoration: none;
-  letter-spacing: -0.02em;
-  transition: color 0.2s;
+  letter-spacing: -0.03em;
   flex-shrink: 0;
+  transition: color 0.2s;
 }
 .brand:hover { color: #fff; }
+
 
 /* ── Desktop nav ─────────────────────────────────────────────────────────── */
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.1rem;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-link {
-  padding: 0.4rem 0.75rem;
-  border-radius: var(--radius);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
   text-decoration: none;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-weight: 500;
-  font-size: 0.9rem;
-  transition: color 0.2s, background 0.2s;
-  position: relative;
+  font-size: 0.875rem;
+  transition: color 0.15s, background 0.15s;
   white-space: nowrap;
 }
-.nav-link:hover { color: var(--text-primary); background: var(--bg-surface-2); }
+.nav-link:hover { color: var(--text-primary); }
 .nav-link.router-link-active,
-.nav-link.router-link-exact-active { color: var(--accent-green-hover); }
-.nav-link.router-link-exact-active::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0.75rem;
-  right: 0.75rem;
-  height: 2px;
-  background: var(--accent-green);
-  border-radius: 1px;
+.nav-link.router-link-exact-active {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  font-weight: 600;
+}
+
+/* ── Utility controls ────────────────────────────────────────────────────── */
+.nav-utils {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .lang-toggle {
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.3rem 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-  letter-spacing: 0.03em;
-}
-.lang-toggle:hover {
-  color: var(--text-primary);
-  border-color: var(--accent-green);
-}
-
-.account-btn {
-  background: var(--accent-green);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  padding: 0.4rem 1rem;
-  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 0.28rem 0.6rem;
+  font-size: 0.75rem;
   font-weight: 700;
   cursor: pointer;
-  margin-left: 0.5rem;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 12px rgba(16, 185, 129, 0.25);
-  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
-.account-btn:hover { background: var(--accent-green-hover); }
+.lang-toggle:hover { color: #f59e0b; border-color: rgba(245,158,11,0.4); }
 
+.account-btn {
+  background: #f59e0b;
+  color: #0f1419;
+  border: none;
+  border-radius: 6px;
+  padding: 0.38rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.account-btn:hover { background: #fbbf24; }
+
+/* ── Dropdown ────────────────────────────────────────────────────────────── */
 .account-dropdown-wrapper { position: relative; }
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  background: #141c27;
+  border: 1px solid rgba(245, 158, 11, 0.15);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  min-width: 160px;
+  min-width: 170px;
   z-index: 200;
   overflow: hidden;
 }
@@ -280,24 +304,24 @@ onBeforeUnmount(() => {
 .dropdown-item {
   background: none;
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.08);
   text-align: left;
   padding: 0.65rem 1rem;
-  color: var(--text-primary);
-  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
   display: block;
-  transition: background 0.15s;
+  transition: background 0.12s, color 0.12s;
 }
 .dropdown-item:last-child { border-bottom: none; }
-.dropdown-item:hover { background: var(--bg-surface-2); }
-.dropdown-item--admin { color: var(--accent-hover); }
+.dropdown-item:hover { background: rgba(245,158,11,0.06); color: var(--text-primary); }
+.dropdown-item--admin { color: #f59e0b; }
 .dropdown-item--danger { color: var(--lose); }
-.dropdown-item--danger:hover { background: rgba(218, 54, 51, 0.1); }
+.dropdown-item--danger:hover { background: rgba(239, 68, 68, 0.08); }
 
-/* ── Mobile controls (hamburger + search) ────────────────────────────────── */
+/* ── Mobile controls ─────────────────────────────────────────────────────── */
 .mobile-controls {
   display: none;
   align-items: center;
@@ -313,7 +337,7 @@ onBeforeUnmount(() => {
   border: none;
   cursor: pointer;
   padding: 0.35rem;
-  border-radius: var(--radius);
+  border-radius: 6px;
   width: 36px;
   height: 36px;
 }
@@ -325,9 +349,7 @@ onBeforeUnmount(() => {
   transition: transform 0.2s, opacity 0.2s, background 0.2s;
   transform-origin: center;
 }
-.hamburger:hover span { background: var(--text-primary); }
-
-/* Animate to X when open */
+.hamburger:hover span { background: #f59e0b; }
 .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
@@ -336,37 +358,42 @@ onBeforeUnmount(() => {
 .mobile-drawer {
   display: flex;
   flex-direction: column;
-  background: rgba(4, 8, 15, 0.97);
-  border-top: 1px solid var(--border);
-  padding: 0.5rem 0 1rem;
+  background: #0f1419;
+  border-top: 1px solid rgba(245, 158, 11, 0.1);
+  padding: 0.75rem 0 1.25rem;
 }
 
 .mob-link {
   display: block;
-  padding: 0.75rem 1.5rem;
-  color: var(--text-secondary);
-  font-size: 1rem;
+  padding: 0.7rem 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.975rem;
   font-weight: 500;
   text-decoration: none;
   border: none;
+  border-left: 3px solid transparent;
   background: none;
   text-align: left;
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.15s, border-left-color 0.15s, background 0.15s;
   width: 100%;
 }
-.mob-link:hover,
-.mob-link.router-link-active { color: var(--text-primary); background: rgba(255,255,255,0.04); }
-.mob-link--admin { color: var(--accent-hover); }
+.mob-link:hover { color: var(--text-primary); }
+.mob-link.router-link-active {
+  color: #f59e0b;
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+.mob-link--admin { color: #f59e0b; }
 .mob-link--danger { color: var(--lose); }
 
 .mob-divider {
   border: none;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(245, 158, 11, 0.08);
   margin: 0.5rem 0;
 }
 
-/* ── Responsive breakpoint ───────────────────────────────────────────────── */
+/* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 960px) {
   .desktop-nav { display: none; }
   .mobile-controls { display: flex; }

@@ -204,7 +204,7 @@ onMounted(async () => {
   border: 1px solid;
 }
 .how-icon.exact   { background: rgba(16,185,129,0.12); color: var(--win);        border-color: rgba(16,185,129,0.3); }
-.how-icon.correct { background: rgba(59,130,246,0.12);  color: var(--accent-hover); border-color: rgba(59,130,246,0.3); }
+.how-icon.correct { background: rgba(245,158,11,0.12);  color: var(--accent-hover); border-color: rgba(245,158,11,0.3); }
 .how-icon.wrong   { background: rgba(239,68,68,0.12);  color: var(--lose);       border-color: rgba(239,68,68,0.3); }
 .how-row > div {
   display: flex;
@@ -217,8 +217,8 @@ onMounted(async () => {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--accent-hover);
-  background: rgba(59,130,246,0.1);
-  border: 1px solid rgba(59,130,246,0.25);
+  background: var(--accent-muted);
+  border: 1px solid rgba(245,158,11,0.25);
   border-radius: 999px;
   padding: 1px 8px;
 }
@@ -229,7 +229,7 @@ onMounted(async () => {
   display: inline-block;
   padding: 0.6rem 1.4rem;
   background: var(--accent);
-  color: #fff;
+  color: #0f1419;
   border-radius: var(--radius);
   font-size: 0.875rem;
   font-weight: 600;
@@ -274,7 +274,7 @@ onMounted(async () => {
 
 .lb-table tbody tr:last-child td { border-bottom: none; }
 .lb-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
-.row-self td { background: rgba(59,130,246,0.05); }
+.row-self td { background: rgba(245,158,11,0.04); }
 
 .col-rank { width: 48px; }
 .col-num  { text-align: center; color: var(--text-secondary); }

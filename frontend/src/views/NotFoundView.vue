@@ -19,7 +19,7 @@
 .nf-code {
   font-size: 6rem;
   font-weight: 800;
-  color: var(--accent, #3b82f6);
+  color: var(--accent);
   margin: 0;
 }
 .nf-msg {
@@ -28,7 +28,7 @@
 }
 .nf-home {
   margin-top: 8px;
-  color: var(--accent, #3b82f6);
+  color: var(--accent);
   text-decoration: underline;
 }
 </style>

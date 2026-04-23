@@ -137,12 +137,11 @@ async function handleRegister() {
 .auth-card {
   width: 100%;
   max-width: 420px;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141c27;
+  border: 1px solid rgba(245, 158, 11, 0.15);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
@@ -179,8 +178,8 @@ input {
 input::placeholder { color: var(--text-muted); }
 input:focus {
   outline: none;
-  border-color: var(--accent-green);
-  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.04);
 }
 .field--error input { border-color: var(--lose); }
 
@@ -209,16 +208,12 @@ input:focus {
 .btn-primary {
   width: 100%;
   margin-top: 0.4rem;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
-}
-.btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.35);
 }
 
 .error-msg { color: var(--lose); font-size: 0.875rem; margin-top: 0.25rem; text-align: center; }
-.success-msg { color: var(--accent-green-hover); font-size: 0.875rem; margin-top: 0.75rem; text-align: center; }
+.success-msg { color: #fbbf24; font-size: 0.875rem; margin-top: 0.75rem; text-align: center; }
 
 .auth-switch { text-align: center; font-size: 0.875rem; color: var(--text-secondary); margin-top: 1.25rem; }
-.auth-switch a { color: var(--accent-green-hover); text-decoration: none; font-weight: 600; }
+.auth-switch a { color: #f59e0b; text-decoration: none; font-weight: 600; }
 .auth-switch a:hover { text-decoration: underline; }
 </style>

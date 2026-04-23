@@ -260,7 +260,6 @@ function rankClass(index) {
   border-radius: var(--radius-lg);
   padding: 1.5rem 1.5rem 1.25rem;
   margin-bottom: 2.5rem;
-  box-shadow: var(--shadow);
 }
 
 .section-header {
@@ -357,15 +356,14 @@ function rankClass(index) {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 0.9rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(59,130,246,0.25);
 }
 
 /* Info */
@@ -455,17 +453,17 @@ function rankClass(index) {
   gap: 0.85rem;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s, transform 0.15s, background 0.15s;
-  box-shadow: var(--shadow);
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
 .league-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
-  background: var(--bg-surface-2);
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
@@ -555,32 +553,29 @@ h1 {
 .team-card {
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-top: 3px solid transparent;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-  box-shadow: var(--shadow);
+  transition: border-color 0.18s, border-top-color 0.18s, transform 0.15s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 .team-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(59,130,246,0.15);
+  border-color: var(--border-hover);
+  border-top-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .card-banner {
-  height: 90px;
-  background: linear-gradient(135deg, #0c1e3d 0%, #152033 60%, #1e3050 100%);
+  height: 80px;
+  background: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
 }
 .card-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(59,130,246,0.12) 0%, transparent 65%);
+  display: none;
 }
 
 .crest-img {
@@ -596,14 +591,13 @@ h1 {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   font-size: 1.6rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(59,130,246,0.4);
   position: relative;
   z-index: 1;
 }

@@ -741,17 +741,17 @@ h1 {
   gap: 0.85rem;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.2s, transform 0.15s, background 0.15s;
-  box-shadow: var(--shadow);
+  transition: border-color 0.18s, border-left-color 0.18s, transform 0.15s;
 }
 .league-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
-  background: var(--bg-surface-2);
+  border-color: var(--border-hover);
+  border-left-color: var(--accent);
+  transform: translateY(-2px);
 }
 
 .league-flag { font-size: 1.8rem; line-height: 1; flex-shrink: 0; }
@@ -806,8 +806,8 @@ h1 {
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
-.season-btn:hover { border-color: rgba(16,185,129,0.4); color: var(--text-primary); }
-.season-btn.active { background: rgba(16,185,129,0.12); border-color: var(--accent-green); color: var(--accent-green-hover); }
+.season-btn:hover { border-color: rgba(245,158,11,0.4); color: var(--text-primary); }
+.season-btn.active { background: rgba(245,158,11,0.1); border-color: var(--accent-green); color: var(--accent-green-hover); }
 
 /* ─── Mode tabs (Results / Fixtures) ─────────────────────────────────────────── */
 .mode-tabs {
@@ -873,7 +873,6 @@ h1 {
   align-items: center;
   gap: 0.15rem;
   min-width: 72px;
-  box-shadow: var(--shadow);
 }
 
 .stat-pill--win  { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); }
@@ -900,7 +899,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  box-shadow: var(--shadow);
 }
 
 .biggest-win-label {

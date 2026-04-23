@@ -19,8 +19,8 @@ a {
    ─────────────────────────────────────────────────────────────────────────── */
 
 .btn-primary {
-  background: var(--accent-green);
-  color: #fff;
+  background: #f59e0b;
+  color: #0f1419;
   border: none;
   border-radius: var(--radius);
   padding: 0.7rem 1.25rem;
@@ -29,10 +29,10 @@ a {
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: background 0.2s;
 }
 .btn-primary:hover:not(:disabled) {
-  background: var(--accent-green-hover);
+  background: #d97706;
 }
 .btn-primary:disabled {
   opacity: 0.45;

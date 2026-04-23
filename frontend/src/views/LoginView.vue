@@ -108,12 +108,11 @@ function logout() {
 .auth-card {
   width: 100%;
   max-width: 400px;
-  background: rgba(8, 14, 26, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141c27;
+  border: 1px solid rgba(245, 158, 11, 0.15);
   border-radius: var(--radius-lg);
   padding: 2.25rem;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
@@ -157,8 +156,8 @@ input {
 input::placeholder { color: var(--text-muted); }
 input:focus {
   outline: none;
-  border-color: var(--accent-green);
-  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.04);
 }
 
 /* btn-primary / btn-ghost base defined in main.css — overrides only */
@@ -167,10 +166,6 @@ input:focus {
   margin-top: 0.4rem;
   text-align: center;
   display: block;
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
-}
-.btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.35);
 }
 .btn-ghost {
   width: 100%;
@@ -193,7 +188,7 @@ input:focus {
   margin-top: 1.25rem;
 }
 .auth-switch a {
-  color: var(--accent-green-hover);
+  color: #f59e0b;
   text-decoration: none;
   font-weight: 600;
 }

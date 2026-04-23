@@ -1236,9 +1236,9 @@ onMounted(async () => {
 .dash-tab-count {
   font-size: 0.62rem;
   font-weight: 700;
-  background: rgba(59,130,246,0.15);
+  background: var(--accent-muted);
   color: var(--accent-hover);
-  border: 1px solid rgba(59,130,246,0.25);
+  border: 1px solid rgba(245,158,11,0.25);
   border-radius: 999px;
   padding: 1px 6px;
 }
@@ -1282,7 +1282,6 @@ onMounted(async () => {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
-  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -1769,7 +1768,6 @@ onMounted(async () => {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.4rem;
-  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -2165,7 +2163,7 @@ onMounted(async () => {
   border-radius: 999px;
 }
 .pred-outcome--exact  { background: rgba(16,185,129,0.15); color: var(--accent-green-hover); border: 1px solid var(--accent-green); }
-.pred-outcome--correct { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+.pred-outcome--correct { background: rgba(245,158,11,0.1); color: var(--accent-hover); border: 1px solid rgba(245,158,11,0.3); }
 .pred-outcome--wrong  { background: rgba(239,68,68,0.1); color: var(--lose); border: 1px solid rgba(239,68,68,0.25); }
 
 .pred-past-header {
@@ -2305,8 +2303,8 @@ onMounted(async () => {
 }
 
 .picker-player-card.already-watched {
-  border-color: rgba(16,185,129,0.35);
-  background: rgba(16,185,129,0.06);
+  border-color: rgba(245,158,11,0.35);
+  background: rgba(245,158,11,0.06);
 }
 
 .picker-watched-star {

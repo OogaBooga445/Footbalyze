@@ -150,6 +150,7 @@ async function save() {
   max-width: 440px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
   border-radius: var(--radius-lg);
   padding: 2rem 2rem 2.5rem;
   display: flex;
@@ -210,7 +211,7 @@ form { display: flex; flex-direction: column; gap: 1.1rem; }
   width: 100%;
   box-sizing: border-box;
 }
-.field-input:focus { border-color: var(--accent); }
+.field-input:focus { border-color: rgba(245, 158, 11, 0.6); }
 .field-input.invalid { border-color: var(--lose); }
 
 .field-error {
@@ -253,7 +254,7 @@ form { display: flex; flex-direction: column; gap: 1.1rem; }
   border-radius: var(--radius);
   font-size: 0.875rem;
   font-weight: 700;
-  color: #fff;
+  color: #0f1419;
   background: var(--accent);
   border: none;
   cursor: pointer;
