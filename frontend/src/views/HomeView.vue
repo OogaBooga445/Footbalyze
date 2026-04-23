@@ -78,7 +78,7 @@
     </section>
 
     <!-- ── Competitions marquee ────────────────────────────────────────────── -->
-    <div class="comps-strip fade-section" v-fade-in>
+    <div class="comps-strip">
       <div class="comps-track">
         <RouterLink
           v-for="(comp, i) in [...competitions, ...competitions]"
