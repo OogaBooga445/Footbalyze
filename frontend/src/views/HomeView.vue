@@ -79,7 +79,7 @@
 
     <!-- ── Competitions marquee ────────────────────────────────────────────── -->
     <div class="comps-strip">
-      <div class="comps-track">
+      <div v-if="competitions.length" class="comps-track">
         <RouterLink
           v-for="(comp, i) in [...competitions, ...competitions]"
           :key="`${comp.code}-${i}`"
@@ -567,16 +567,18 @@ onMounted(async () => {
 .comps-track {
   display: flex;
   gap: 0.75rem;
+  width: -webkit-max-content;
   width: max-content;
   animation: marquee 32s linear infinite;
   padding: 0 0.375rem;
+  will-change: transform;
 }
 
 .comps-track:hover { animation-play-state: paused; }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
 .comp-chip {
