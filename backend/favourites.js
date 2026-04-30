@@ -8,11 +8,11 @@ const router = express.Router();
 router.get('/', authenticate, async (req, res) => {
   try {
     const [rows] = await pool.query(
-      'SELECT Team_ID, Player_ID FROM favourites WHERE User_ID = ? LIMIT 1',
+      'SELECT Team_ID, Player_ID, LeagueCode FROM favourites WHERE User_ID = ? LIMIT 1',
       [req.user.id]
     );
     const fav = rows[0] || {};
-    res.json({ team: fav.Team_ID || null, player: fav.Player_ID || null });
+    res.json({ team: fav.Team_ID || null, player: fav.Player_ID || null, playerLeague: fav.LeagueCode || null });
   } catch (err) {
     console.error('Fetch favourites error:', err.message);
     res.status(500).json({ error: 'Failed to fetch favourites' });

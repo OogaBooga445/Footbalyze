@@ -886,6 +886,10 @@ async function fetchFavourites() {
     const res = await api.get('/favourites')
     savedTeamId.value   = res.data.team   ?? null
     savedPlayerId.value = res.data.player ?? null
+    if (res.data.playerLeague) {
+      playerLeague.value = res.data.playerLeague
+      localStorage.setItem('favPlayerLeague', res.data.playerLeague)
+    }
   } catch (e) {
     console.error(e)
   }
@@ -1166,9 +1170,7 @@ onMounted(async () => {
   fetchTeamDetail(savedTeamId.value)
 
   if (savedPlayerId.value) {
-    const favLeague = localStorage.getItem('favPlayerLeague')
-    if (favLeague) playerLeague.value = favLeague
-    fetchPlayers(favLeague || playerLeague.value).then(() => {
+    fetchPlayers(playerLeague.value).then(() => {
       const player = players.value.find(p => p.Player_ID === savedPlayerId.value)
       fetchPlayerStats(savedPlayerId.value)
       fetchPlayerTeamDetail(player?.Team_ID || null)
