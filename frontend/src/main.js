@@ -1,4 +1,6 @@
 import './assets/main.css'
+import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill'
+polyfillCountryFlagEmojis()
 
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'

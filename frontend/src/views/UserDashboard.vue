@@ -968,8 +968,10 @@ watch(savedPlayerId, async (newId) => {
       player = players.value.find(p => p.Player_ID === newId)
     }
   }
-  fetchPlayerStats(newId)
-  fetchPlayerTeamDetail(player?.Team_ID || null)
+  if (player) {
+    fetchPlayerStats(newId)
+    fetchPlayerTeamDetail(player.Team_ID || null)
+  }
 })
 
 watch(teamDetail, (detail) => {
@@ -1003,7 +1005,17 @@ async function savePlayer() {
   savingPlayer.value = true
   playerError.value = ''
   try {
-    await api.post('/favourites/player', { playerId: pendingPlayerId.value })
+    const player = players.value.find(p => p.Player_ID === pendingPlayerId.value)
+    await api.post('/favourites/player', {
+      playerId: pendingPlayerId.value,
+      playerName: player ? `${player.Name} ${player.Surname}`.trim() : null,
+      playerTeamId: player?.Team_ID || null,
+      playerTeamName: player?.Team_Name || null,
+      position: player?.Position || null,
+      detailedPosition: player?.DetailedPosition || null,
+      nationality: player?.Nationality || null,
+      leagueCode: player?.leagueCode || null,
+    })
     localStorage.setItem('favPlayerLeague', playerLeague.value)
     savedPlayerId.value = pendingPlayerId.value
     showPlayerPicker.value = false
@@ -1156,10 +1168,9 @@ onMounted(async () => {
   if (savedPlayerId.value) {
     const favLeague = localStorage.getItem('favPlayerLeague')
     if (favLeague) playerLeague.value = favLeague
-    fetchPlayerStats(savedPlayerId.value)
-    // Fetch player's team detail via their stored league
     fetchPlayers(favLeague || playerLeague.value).then(() => {
       const player = players.value.find(p => p.Player_ID === savedPlayerId.value)
+      fetchPlayerStats(savedPlayerId.value)
       fetchPlayerTeamDetail(player?.Team_ID || null)
     })
   } else {

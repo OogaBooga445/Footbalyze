@@ -186,7 +186,7 @@
                         <div v-if="commentsCache[match.Match_ID]?.length" class="comments-list">
                           <div v-for="c in commentsCache[match.Match_ID]" :key="c.Comment_ID" class="comment-item">
                             <div class="comment-header">
-                              <span class="comment-username">{{ c.Username }}</span>
+                              <RouterLink :to="`/users/${c.Username}`" class="comment-username">{{ c.Username }}</RouterLink>
                               <span class="comment-time">{{ formatCommentTime(c.CreatedAt) }}</span>
                               <button
                                 v-if="currentUser && currentUser.id !== c.User_ID && currentUser.role?.toLowerCase() !== 'admin'"

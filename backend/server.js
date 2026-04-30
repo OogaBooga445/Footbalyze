@@ -14,6 +14,7 @@ const { router: predictionsRouter, resolveOutcomes } = require('./predictions');
 const watchlistRouter = require('./watchlist');
 const adminRouter = require('./admin');
 const commentsRouter = require('./comments');
+const profilesRouter = require('./profiles');
 
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
@@ -115,6 +116,7 @@ app.use('/api/predictions', predictionsRouter);
 app.use('/api/watchlist', watchlistRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/comments', commentsRouter);
+app.use('/api/users', profilesRouter);
 
 // ── 404 catch-all ─────────────────────────────────────────────────────────────
 
@@ -152,6 +154,29 @@ async function runMigrations() {
   await run(`ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255) NULL`, 'users.avatar_url');
   await run(`ALTER TABLE favourites ADD UNIQUE KEY uq_user (User_ID)`, 'favourites.uq_user');
   await run(`ALTER TABLE users ADD COLUMN banned TINYINT(1) NOT NULL DEFAULT 0`, 'users.banned');
+  await run(`ALTER TABLE favourites ADD COLUMN Player_Name VARCHAR(100) NULL`, 'favourites.Player_Name');
+  await run(`ALTER TABLE favourites ADD COLUMN Player_Team_ID INT NULL`, 'favourites.Player_Team_ID');
+  await run(`ALTER TABLE favourites ADD COLUMN Player_Team_Name VARCHAR(100) NULL`, 'favourites.Player_Team_Name');
+  await run(`ALTER TABLE favourites ADD COLUMN Position VARCHAR(20) NULL`, 'favourites.Position');
+  await run(`ALTER TABLE favourites ADD COLUMN DetailedPosition VARCHAR(50) NULL`, 'favourites.DetailedPosition');
+  await run(`ALTER TABLE favourites ADD COLUMN Nationality VARCHAR(50) NULL`, 'favourites.Nationality');
+  await run(`ALTER TABLE favourites ADD COLUMN LeagueCode VARCHAR(10) NULL`, 'favourites.LeagueCode');
+  // Backfill player metadata from watchlist for existing favourites rows
+  try {
+    await pool.query(`
+      UPDATE favourites f
+      JOIN watchlist w ON w.Player_ID = f.Player_ID
+      SET
+        f.Player_Name         = w.Player_Name,
+        f.Player_Team_ID      = w.Team_ID,
+        f.Player_Team_Name    = w.Team_Name,
+        f.Position            = w.Position,
+        f.DetailedPosition    = w.DetailedPosition,
+        f.Nationality         = w.Nationality,
+        f.LeagueCode          = w.LeagueCode
+      WHERE f.Player_ID IS NOT NULL AND f.Player_Name IS NULL
+    `);
+  } catch (err) { console.error('Migration [favourites.backfill]:', err.message); }
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────

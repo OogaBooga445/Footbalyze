@@ -37,12 +37,22 @@ router.post('/team', authenticate, async (req, res) => {
 
 // POST /api/favourites/player
 router.post('/player', authenticate, async (req, res) => {
-  const { playerId } = req.body;
+  const { playerId, playerName, playerTeamId, playerTeamName, position, detailedPosition, nationality, leagueCode } = req.body;
   if (!playerId) return res.status(400).json({ error: 'playerId required' });
   try {
     await pool.query(
-      'INSERT INTO favourites (User_ID, Player_ID) VALUES (?, ?) ON DUPLICATE KEY UPDATE Player_ID = VALUES(Player_ID)',
-      [req.user.id, playerId]
+      `INSERT INTO favourites (User_ID, Player_ID, Player_Name, Player_Team_ID, Player_Team_Name, Position, DetailedPosition, Nationality, LeagueCode)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         Player_ID = VALUES(Player_ID),
+         Player_Name = VALUES(Player_Name),
+         Player_Team_ID = VALUES(Player_Team_ID),
+         Player_Team_Name = VALUES(Player_Team_Name),
+         Position = VALUES(Position),
+         DetailedPosition = VALUES(DetailedPosition),
+         Nationality = VALUES(Nationality),
+         LeagueCode = VALUES(LeagueCode)`,
+      [req.user.id, playerId, playerName || null, playerTeamId || null, playerTeamName || null, position || null, detailedPosition || null, nationality || null, leagueCode || null]
     );
     res.json({ ok: true });
   } catch (err) {

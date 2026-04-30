@@ -70,7 +70,7 @@
             </td>
             <td>
               <div class="col-user">
-                <span class="lb-username">{{ row.Username }}</span>
+                <RouterLink :to="`/users/${row.Username}`" class="lb-username">{{ row.Username }}</RouterLink>
                 <span v-if="row.Username === currentUsername" class="you-badge">{{ $t('leaderboard.you') }}</span>
               </div>
             </td>
@@ -91,6 +91,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex'
 import api from '../services/api'
 
@@ -305,7 +306,10 @@ onMounted(async () => {
 .lb-username {
   font-weight: 600;
   color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.15s;
 }
+.lb-username:hover { color: var(--accent-hover); }
 
 .you-badge {
   font-size: 0.62rem;
