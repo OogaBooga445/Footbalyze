@@ -1,7 +1,6 @@
 import './assets/main.css'
 import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill'
-import TwemojiFont from 'country-flag-emoji-polyfill/dist/TwemojiCountryFlags.woff2?url'
-polyfillCountryFlagEmojis('Twemoji Country Flags', TwemojiFont)
+polyfillCountryFlagEmojis('Twemoji Country Flags', '/TwemojiCountryFlags.woff2')
 
 import { createApp } from 'vue'
 import { createI18n } from 'vue-i18n'
