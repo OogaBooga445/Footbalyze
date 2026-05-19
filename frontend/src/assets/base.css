@@ -55,6 +55,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family:
+    'Twemoji Country Flags',
     Inter,
     -apple-system,
     BlinkMacSystemFont,
