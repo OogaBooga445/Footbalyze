@@ -227,7 +227,7 @@ router.get('/teams/:id', async (req, res) => {
       .filter(p => p.Position !== 'Unknown')
       .sort((a, b) => posOrder.indexOf(a.Position) - posOrder.indexOf(b.Position));
 
-    const recentMatches = (matchData.matches || [])
+    const recentMatches = (matchData?.matches || [])
       .filter(m => m.status === 'FINISHED' && (m.homeTeam?.id === id || m.awayTeam?.id === id))
       .sort((a, b) => new Date(b.utcDate) - new Date(a.utcDate))
       .slice(0, 5)
