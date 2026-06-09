@@ -50,7 +50,6 @@
         <select v-model="sortOption">
           <option value="name-asc">{{ $t('teams.sortNameAsc') }}</option>
           <option value="name-desc">{{ $t('teams.sortNameDesc') }}</option>
-          <option value="coach">{{ $t('teams.sortCoach') }}</option>
           <option value="country">{{ $t('teams.sortCountry') }}</option>
         </select>
       </div>
@@ -72,8 +71,8 @@
             <div class="card-body">
               <h2 class="team-name">{{ team.name }}</h2>
               <div class="meta-row">
-                <span class="meta-chip coach-chip">
-                  <span class="chip-icon">👤</span><span>{{ team.coach || '—' }}</span><span v-if="team.coach_nationality" class="coach-flag">{{ nationalityFlag(team.coach_nationality) }}</span>
+                <span v-if="team.coach" class="meta-chip coach-chip">
+                  <span class="chip-icon">👤</span><span>{{ team.coach }}</span><span v-if="team.coach_nationality" class="coach-flag">{{ nationalityFlag(team.coach_nationality) }}</span>
                 </span>
                 <span class="meta-chip country-chip">
                   <span class="chip-icon">🌍</span> {{ team.country || '—' }}
@@ -141,7 +140,6 @@ const filteredTeams = computed(() => {
   switch (sortOption.value) {
     case 'name-asc':  return [...arr].sort((a, b) => a.name.localeCompare(b.name))
     case 'name-desc': return [...arr].sort((a, b) => b.name.localeCompare(a.name))
-    case 'coach':     return [...arr].sort((a, b) => (a.coach || '').localeCompare(b.coach || ''))
     case 'country':   return [...arr].sort((a, b) => (a.country || '').localeCompare(b.country || ''))
     default:          return arr
   }

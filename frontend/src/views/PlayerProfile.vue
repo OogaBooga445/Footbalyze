@@ -113,7 +113,7 @@
             </div>
             <div class="card-body">
               <h2 class="team-name">{{ team.name }}</h2>
-              <span class="team-coach"><span>{{ team.coach || '—' }}</span><span v-if="team.coach_nationality" class="coach-flag">{{ nationalityFlag(team.coach_nationality) }}</span></span>
+              <span v-if="team.coach" class="team-coach"><span>{{ team.coach }}</span><span v-if="team.coach_nationality" class="coach-flag">{{ nationalityFlag(team.coach_nationality) }}</span></span>
             </div>
           </li>
         </ul>

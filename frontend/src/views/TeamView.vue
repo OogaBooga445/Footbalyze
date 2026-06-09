@@ -20,7 +20,7 @@
         <div class="header-info">
           <h1>{{ team.Team_Name }}</h1>
           <div class="header-meta">
-            <span class="meta-pill"><span class="meta-icon">👤</span><span>{{ team.Coach_name || '—' }}</span><span v-if="team.Coach_nationality" class="pill-flag">{{ nationalityFlag(team.Coach_nationality) }}</span></span>
+            <span v-if="team.Coach_name" class="meta-pill"><span class="meta-icon">👤</span><span>{{ team.Coach_name }}</span><span v-if="team.Coach_nationality" class="pill-flag">{{ nationalityFlag(team.Coach_nationality) }}</span></span>
             <span class="meta-pill"><span class="meta-icon">🌍</span> {{ team.Country || '—' }}</span>
             <span class="meta-pill accent-pill"><span class="meta-icon">👥</span> {{ team.players.length }} {{ $t('common.players') }}</span>
           </div>

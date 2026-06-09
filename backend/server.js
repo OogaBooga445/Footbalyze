@@ -123,7 +123,7 @@ app.use('/api/users', profilesRouter);
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
 // ── Startup migrations ────────────────────────────────────────────────────────
-// These are safe no-ops if the DB was set up from bombo.sql.
+// These are safe no-ops if the DB was set up from Tables.sql.
 
 async function runMigrations() {
   const run = async (sql, label) => {

@@ -179,7 +179,6 @@ export default {
     noClubs: 'No clubs found for this competition.',
     sortNameAsc: 'Name (A–Z)',
     sortNameDesc: 'Name (Z–A)',
-    sortCoach: 'Coach Name',
     sortCountry: 'Country',
     searchPlaceholder: 'Search by club name...',
   },

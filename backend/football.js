@@ -168,25 +168,44 @@ router.get('/leagues/:code/scorers', async (req, res) => {
   }
 });
 
-router.get('/teams', async (req, res) => {
+// Resolve a team's data + its domestic league. The free-tier /teams/{id} endpoint
+// is restricted for many teams (returns 403), but /competitions/{code}/teams
+// returns full squads for every team — so fall back to that when the per-team
+// endpoint is blocked. Throws the original error only if the team is found nowhere.
+async function resolveTeamData(id) {
   try {
-    const data = await fdApi.getTeams('PL');
-    res.json((data.teams || []).map(normalizeTeam));
+    const teamData = await fdApi.getTeamDetail(id);
+    const comps = teamData.runningCompetitions || [];
+    let leagueCode = (comps.find(c => DOMESTIC_LEAGUES.has(c.code)) ||
+                      comps.find(c => SUPPORTED_LEAGUES.has(c.code)))?.code;
+    if (!leagueCode) {
+      for (const code of DOMESTIC_LEAGUES) {
+        const data = await fdApi.getTeams(code).catch(() => null);
+        if (data && (data.teams || []).some(t => t.id === id)) { leagueCode = code; break; }
+      }
+    }
+    return { teamData, leagueCode: leagueCode || 'PL' };
   } catch (err) {
-    console.error('Teams error:', err.message);
-    res.status(500).json({ error: 'Failed to fetch teams' });
+    if (err.response?.status === 404) throw err;
+    // 403 (plan-restricted) or other — rebuild from the free competition endpoint
+    for (const code of DOMESTIC_LEAGUES) {
+      const data = await fdApi.getTeams(code).catch(() => null);
+      const teamData = data && (data.teams || []).find(t => t.id === id);
+      if (teamData) return { teamData, leagueCode: code };
+    }
+    throw err;
   }
-});
+}
 
 router.get('/teams/:id', async (req, res) => {
   const id = Number(req.params.id);
   try {
-    const teamData = await fdApi.getTeamDetail(id);
-    const comps = teamData.runningCompetitions || [];
-    const leagueCode = (comps.find(c => DOMESTIC_LEAGUES.has(c.code)) || comps.find(c => SUPPORTED_LEAGUES.has(c.code)))?.code || 'PL';
+    const { teamData, leagueCode } = await resolveTeamData(id);
 
+    // Matches/standings are optional enrichment — if they fail (rate limit or
+    // plan restriction) the squad still renders rather than failing the whole page.
     const [matchData, standingsData] = await Promise.all([
-      fdApi.getMatches(leagueCode, { season: SEASON }),
+      fdApi.getMatches(leagueCode, { season: SEASON }).catch(() => null),
       fdApi.getStandings(leagueCode).catch(() => null),
     ]);
 
@@ -233,16 +252,6 @@ router.get('/teams/:id', async (req, res) => {
   }
 });
 
-router.get('/fd/teams/:id', async (req, res) => {
-  try {
-    const data = await fdApi.getTeamDetail(req.params.id);
-    res.json(data);
-  } catch (err) {
-    console.error('Team detail error:', err.response?.status, err.message);
-    res.status(err.response?.status || 500).json({ error: err.response?.data?.message || 'Failed to fetch team' });
-  }
-});
-
 router.get('/players', async (req, res) => {
   const code = req.query.code || 'PL';
   try {
@@ -276,10 +285,14 @@ router.get('/players/:id/profile', async (req, res) => {
   const code     = req.query.code || 'PL';
   if (!teamId) return res.status(400).json({ error: 'teamId required' });
   try {
-    const [teamData, matchData] = await Promise.all([
-      fdApi.getTeamDetail(teamId),
+    // Source the squad from the free competition endpoint (the per-team
+    // /teams/{id} endpoint is plan-restricted for many teams); `code` is supplied.
+    const [teamsData, matchData] = await Promise.all([
+      fdApi.getTeams(code),
       fdApi.getMatches(code, { season: SEASON }),
     ]);
+    const teamData = (teamsData.teams || []).find(t => t.id === teamId);
+    if (!teamData) return res.status(404).json({ error: 'Team not found' });
 
     const rawPlayer = (teamData.squad || []).find(p => p.id === playerId);
     if (!rawPlayer) return res.status(404).json({ error: 'Player not found in squad' });
@@ -497,22 +510,6 @@ router.get('/h2h', async (req, res) => {
   } catch (err) {
     console.error('H2H error:', err.message);
     res.status(500).json({ error: 'Failed to fetch head-to-head data' });
-  }
-});
-
-router.get('/stats', async (req, res) => {
-  try {
-    const [teamsData, matchData] = await Promise.all([
-      fdApi.getTeams('PL'),
-      fdApi.getMatches('PL', { season: SEASON }),
-    ]);
-    const teams = teamsData.teams?.length || 0;
-    const players = (teamsData.teams || []).reduce((sum, t) => sum + (t.squad?.length || 0), 0);
-    const matches = (matchData.matches || []).filter(m => m.status === 'FINISHED').length;
-    res.json({ teams, players, matches });
-  } catch (err) {
-    console.error('Stats error:', err.message);
-    res.status(500).json({ error: 'Failed to fetch stats' });
   }
 });
 

@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-// Directly specify the database credentials
+// MySQL connection pool — credentials come from environment (.env), with local-dev fallbacks
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -10,7 +10,7 @@ const pool = mysql.createPool({
   connectionLimit: 10
 });
 
-// Log the connection attempt
+// Verify connectivity on startup
 pool.getConnection()
   .then(connection => {
     console.log('Successfully connected to the database');

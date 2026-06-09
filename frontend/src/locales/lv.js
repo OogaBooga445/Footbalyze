@@ -179,7 +179,6 @@ export default {
     noClubs: 'Šajā sacensībā nav atrasti klubi.',
     sortNameAsc: 'Nosaukums (A–Z)',
     sortNameDesc: 'Nosaukums (Z–A)',
-    sortCoach: 'Trenera vārds',
     sortCountry: 'Valsts',
     searchPlaceholder: 'Meklēt pēc kluba nosaukuma...',
   },

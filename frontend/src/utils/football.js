@@ -14,7 +14,7 @@ export const NATIONALITY_FLAGS = {
   'Hungary': '🇭🇺', 'Romania': '🇷🇴', 'Bulgaria': '🇧🇬', 'Russia': '🇷🇺',
   'Jamaica': '🇯🇲', 'Trinidad and Tobago': '🇹🇹', 'Ecuador': '🇪🇨', 'Chile': '🇨🇱',
   'Venezuela': '🇻🇪', 'Paraguay': '🇵🇾', 'Peru': '🇵🇪', 'Bolivia': '🇧🇴',
-  'Sweden': '🇸🇪', 'Iceland': '🇮🇸', 'Montenegro': '🇲🇪', 'North Macedonia': '🇲🇰',
+  'Iceland': '🇮🇸', 'Montenegro': '🇲🇪', 'North Macedonia': '🇲🇰',
   'Bosnia and Herzegovina': '🇧🇦', 'Luxembourg': '🇱🇺', 'Cyprus': '🇨🇾',
   'Israel': '🇮🇱', 'Lebanon': '🇱🇧', 'Iran': '🇮🇷', 'Saudi Arabia': '🇸🇦',
   'Zambia': '🇿🇲', 'Zimbabwe': '🇿🇼', 'Mali': '🇲🇱', 'Guinea': '🇬🇳',
