@@ -463,7 +463,11 @@ router.get('/matches', async (req, res) => {
   const code     = req.query.code   || 'PL';
   const upcoming = req.query.status === 'upcoming';
   try {
-    const data = await fdApi.getMatches(code, { season: SEASON });
+    // Finished results come from the pinned completed season (SEASON). Upcoming
+    // fixtures live in whatever season the API currently treats as active — during
+    // the off-season that's the next campaign — so fetch those without a season
+    // filter and let the API serve its current/upcoming schedule.
+    const data = await fdApi.getMatches(code, upcoming ? {} : { season: SEASON });
     const matches = (data.matches || [])
       .filter(m => upcoming
         ? (m.status === 'SCHEDULED' || m.status === 'TIMED')
