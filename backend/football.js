@@ -141,7 +141,17 @@ router.get('/leagues/:code/standings', async (req, res) => {
 router.get('/leagues/:code/matches', async (req, res) => {
   try {
     const data = await fdApi.getMatches(req.params.code, { season: req.query.season || SEASON });
-    res.json(data);
+    let matches = data.matches || [];
+    // When serving the pinned (finished) season, fold in upcoming fixtures from
+    // the API's current season so the league view lists fixtures too — finished
+    // results stay on SEASON, scheduled games come from the live season.
+    if (!req.query.season) {
+      const current = await fdApi.getMatches(req.params.code, {}).catch(() => null);
+      const upcoming = (current?.matches || []).filter(m => m.status === 'SCHEDULED' || m.status === 'TIMED');
+      const seen = new Set(matches.map(m => m.id));
+      matches = [...matches, ...upcoming.filter(m => !seen.has(m.id))];
+    }
+    res.json({ ...data, matches });
   } catch (err) {
     console.error('Matches error:', err.response?.status, err.message);
     res.status(err.response?.status || 500).json({ error: err.response?.data?.message || 'Failed to fetch matches' });
