@@ -130,7 +130,7 @@ router.get('/leagues', (req, res) => {
 
 router.get('/leagues/:code/standings', async (req, res) => {
   try {
-    const data = await fdApi.getStandings(req.params.code);
+    const data = await fdApi.getStandings(req.params.code, SEASON);
     res.json(data);
   } catch (err) {
     console.error('Standings error:', err.response?.status, err.message);
@@ -140,7 +140,7 @@ router.get('/leagues/:code/standings', async (req, res) => {
 
 router.get('/leagues/:code/matches', async (req, res) => {
   try {
-    const data = await fdApi.getMatches(req.params.code, { season: req.query.season });
+    const data = await fdApi.getMatches(req.params.code, { season: req.query.season || SEASON });
     res.json(data);
   } catch (err) {
     console.error('Matches error:', err.response?.status, err.message);
@@ -160,7 +160,7 @@ router.get('/leagues/:code/teams', async (req, res) => {
 
 router.get('/leagues/:code/scorers', async (req, res) => {
   try {
-    const data = await fdApi.getScorers(req.params.code);
+    const data = await fdApi.getScorers(req.params.code, 50, SEASON);
     res.json(data);
   } catch (err) {
     console.error('Scorers error:', err.response?.status, err.message);
@@ -206,7 +206,7 @@ router.get('/teams/:id', async (req, res) => {
     // plan restriction) the squad still renders rather than failing the whole page.
     const [matchData, standingsData] = await Promise.all([
       fdApi.getMatches(leagueCode, { season: SEASON }).catch(() => null),
-      fdApi.getStandings(leagueCode).catch(() => null),
+      fdApi.getStandings(leagueCode, SEASON).catch(() => null),
     ]);
 
     const team = normalizeTeam(teamData);
@@ -317,7 +317,7 @@ router.get('/players/:id/profile', async (req, res) => {
       }
       stats = { cleanSheets, conceded, played: teamMatches.length };
     } else {
-      const scorersData = await fdApi.getScorers(code, 100);
+      const scorersData = await fdApi.getScorers(code, 100, SEASON);
       const entry = (scorersData.scorers || []).find(s => s.player.id === playerId);
       stats = {
         goals: entry?.goals ?? 0,
@@ -376,7 +376,7 @@ router.get('/players/stats/bulk', async (req, res) => {
 
       if (outfield.length) {
         try {
-          const data = await fdApi.getScorers(code, 400);
+          const data = await fdApi.getScorers(code, 400, SEASON);
           const scorers = data.scorers || [];
           for (const p of outfield) {
             const entry = scorers.find(s => s.player.id === p.id);
@@ -445,7 +445,7 @@ router.get('/players/:id/stats', async (req, res) => {
       }
       return res.json({ cleanSheets, conceded, played: matches.length });
     }
-    const data = await fdApi.getScorers(code, 100);
+    const data = await fdApi.getScorers(code, 100, SEASON);
     const entry = (data.scorers || []).find(s => s.player.id === playerId);
     res.json({
       goals: entry?.goals ?? 0,

@@ -52,9 +52,10 @@ function getCompetitions() {
   return COMPETITIONS;
 }
 
-function getStandings(code) {
-  return cached(`standings:${code}`, 6 * HOUR, async () => { // 6h: standings only change after each round
-    const res = await http.get(`/competitions/${code}/standings`);
+function getStandings(code, season) {
+  const params = season ? { season } : {};
+  return cached(`standings:${code}:${season || 'default'}`, 6 * HOUR, async () => { // 6h: standings only change after each round
+    const res = await http.get(`/competitions/${code}/standings`, { params });
     return res.data;
   });
 }
@@ -77,9 +78,10 @@ function getTeams(code) {
   });
 }
 
-function getScorers(code, limit = 50) {
-  return cached(`scorers:${code}:${limit}`, 6 * HOUR, async () => { // 6h: scorer tables update after each round
-    const res = await http.get(`/competitions/${code}/scorers`, { params: { limit } });
+function getScorers(code, limit = 50, season) {
+  const params = season ? { limit, season } : { limit };
+  return cached(`scorers:${code}:${limit}:${season || 'default'}`, 6 * HOUR, async () => { // 6h: scorer tables update after each round
+    const res = await http.get(`/competitions/${code}/scorers`, { params });
     return res.data;
   });
 }
