@@ -150,7 +150,7 @@ router.get('/leagues/:code/matches', async (req, res) => {
 
 router.get('/leagues/:code/teams', async (req, res) => {
   try {
-    const data = await fdApi.getTeams(req.params.code);
+    const data = await fdApi.getTeams(req.params.code, SEASON);
     res.json(data);
   } catch (err) {
     console.error('Teams error:', err.response?.status, err.message);
@@ -173,14 +173,41 @@ router.get('/leagues/:code/scorers', async (req, res) => {
 // returns full squads for every team — so fall back to that when the per-team
 // endpoint is blocked. Throws the original error only if the team is found nowhere.
 async function resolveTeamData(id) {
+  const domesticCode = (teamData) => {
+    const comps = teamData.runningCompetitions || [];
+    return (comps.find(c => DOMESTIC_LEAGUES.has(c.code)) ||
+            comps.find(c => SUPPORTED_LEAGUES.has(c.code)))?.code;
+  };
+
+  // Pull a full, season-pinned squad for one league from the free competition endpoint.
+  const fullSquad = async (code) => {
+    const data = await fdApi.getTeams(code, SEASON).catch(() => null);
+    const teamData = data && (data.teams || []).find(t => t.id === id);
+    return teamData ? { teamData, leagueCode: code } : null;
+  };
+
+  // Last resort: scan every domestic league for the team's season-pinned squad.
+  const fromCompetitions = async () => {
+    for (const code of DOMESTIC_LEAGUES) {
+      const hit = await fullSquad(code);
+      if (hit) return hit;
+    }
+    return null;
+  };
+
   try {
     const teamData = await fdApi.getTeamDetail(id);
-    const comps = teamData.runningCompetitions || [];
-    let leagueCode = (comps.find(c => DOMESTIC_LEAGUES.has(c.code)) ||
-                      comps.find(c => SUPPORTED_LEAGUES.has(c.code)))?.code;
+    let leagueCode = domesticCode(teamData);
+    // The per-team endpoint follows the API's current season, whose squad is
+    // empty during the off-season. Fall back to the season-pinned competition
+    // squad so the team page still lists players.
+    if (!teamData.squad || teamData.squad.length === 0) {
+      const full = (leagueCode && await fullSquad(leagueCode)) || await fromCompetitions();
+      if (full) return full;
+    }
     if (!leagueCode) {
       for (const code of DOMESTIC_LEAGUES) {
-        const data = await fdApi.getTeams(code).catch(() => null);
+        const data = await fdApi.getTeams(code, SEASON).catch(() => null);
         if (data && (data.teams || []).some(t => t.id === id)) { leagueCode = code; break; }
       }
     }
@@ -188,11 +215,8 @@ async function resolveTeamData(id) {
   } catch (err) {
     if (err.response?.status === 404) throw err;
     // 403 (plan-restricted) or other — rebuild from the free competition endpoint
-    for (const code of DOMESTIC_LEAGUES) {
-      const data = await fdApi.getTeams(code).catch(() => null);
-      const teamData = data && (data.teams || []).find(t => t.id === id);
-      if (teamData) return { teamData, leagueCode: code };
-    }
+    const rebuilt = await fromCompetitions();
+    if (rebuilt) return rebuilt;
     throw err;
   }
 }
@@ -255,7 +279,7 @@ router.get('/teams/:id', async (req, res) => {
 router.get('/players', async (req, res) => {
   const code = req.query.code || 'PL';
   try {
-    const data = await fdApi.getTeams(code);
+    const data = await fdApi.getTeams(code, SEASON);
     const players = [];
     for (const t of (data.teams || [])) {
       for (const p of (t.squad || [])) {
@@ -288,7 +312,7 @@ router.get('/players/:id/profile', async (req, res) => {
     // Source the squad from the free competition endpoint (the per-team
     // /teams/{id} endpoint is plan-restricted for many teams); `code` is supplied.
     const [teamsData, matchData] = await Promise.all([
-      fdApi.getTeams(code),
+      fdApi.getTeams(code, SEASON),
       fdApi.getMatches(code, { season: SEASON }),
     ]);
     const teamData = (teamsData.teams || []).find(t => t.id === teamId);
@@ -519,7 +543,7 @@ router.get('/h2h', async (req, res) => {
 
 router.get('/all-teams', async (req, res) => {
   const codes = ['PL', 'PD', 'BL1', 'SA', 'FL1', 'ELC', 'PPL', 'DED', 'BSA'];
-  const settled = await Promise.allSettled(codes.map(code => fdApi.getTeams(code).then(data => ({ code, data }))));
+  const settled = await Promise.allSettled(codes.map(code => fdApi.getTeams(code, SEASON).then(data => ({ code, data }))));
   const results = [];
   for (const outcome of settled) {
     if (outcome.status === 'rejected') { console.error('teams/all:', outcome.reason?.message); continue; }

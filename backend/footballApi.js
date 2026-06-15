@@ -71,9 +71,10 @@ function getMatches(code, options = {}) {
   });
 }
 
-function getTeams(code) {
-  return cached(`teams:${code}`, DAY, async () => { // 1 day: squad data rarely changes mid-season
-    const res = await http.get(`/competitions/${code}/teams`);
+function getTeams(code, season) {
+  const params = season ? { season } : {};
+  return cached(`teams:${code}:${season || 'default'}`, DAY, async () => { // 1 day: squad data rarely changes mid-season
+    const res = await http.get(`/competitions/${code}/teams`, { params });
     return res.data;
   });
 }
