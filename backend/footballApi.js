@@ -8,15 +8,28 @@ const cache = {};
 // In-flight deduplication — prevents simultaneous cold-cache requests from hitting the API twice
 const inflight = {};
 
-function cached(key, ttlMs, fetcher) {
+// `accept` (optional): predicate that decides whether a fresh response is good
+// enough to cache. The off-season football-data feed intermittently returns
+// empty fixture/standings/squad payloads; rejecting those keeps the last known
+// good value instead of letting a transient empty response poison the cache.
+function cached(key, ttlMs, fetcher, accept) {
   const now = Date.now();
   if (cache[key] && cache[key].expiresAt > now) {
     return Promise.resolve(cache[key].data);
   }
   if (inflight[key]) return inflight[key];
   inflight[key] = fetcher().then(data => {
-    cache[key] = { data, expiresAt: now + ttlMs };
     delete inflight[key];
+    if (!accept || accept(data)) {
+      cache[key] = { data, expiresAt: now + ttlMs };
+      return data;
+    }
+    // Rejected (e.g. empty). Keep serving the last good value if we have one,
+    // and push its expiry out so we don't hammer the API during a flaky spell.
+    if (cache[key]) {
+      cache[key].expiresAt = now + ttlMs;
+      return cache[key].data;
+    }
     return data;
   }).catch(err => {
     delete inflight[key];
@@ -57,7 +70,7 @@ function getStandings(code, season) {
   return cached(`standings:${code}:${season || 'default'}`, 6 * HOUR, async () => { // 6h: standings only change after each round
     const res = await http.get(`/competitions/${code}/standings`, { params });
     return res.data;
-  });
+  }, d => (d.standings || []).some(s => (s.table || []).length > 0));
 }
 
 function getMatches(code, options = {}) {
@@ -68,7 +81,7 @@ function getMatches(code, options = {}) {
   return cached(cacheKey, 30 * MIN, async () => { // 30min: match statuses update frequently on matchdays
     const res = await http.get(`/competitions/${code}/matches`, { params });
     return res.data;
-  });
+  }, d => (d.matches || []).length > 0);
 }
 
 function getTeams(code, season) {
@@ -76,7 +89,7 @@ function getTeams(code, season) {
   return cached(`teams:${code}:${season || 'default'}`, DAY, async () => { // 1 day: squad data rarely changes mid-season
     const res = await http.get(`/competitions/${code}/teams`, { params });
     return res.data;
-  });
+  }, d => (d.teams || []).some(t => (t.squad || []).length > 0));
 }
 
 function getScorers(code, limit = 50, season) {
@@ -84,7 +97,7 @@ function getScorers(code, limit = 50, season) {
   return cached(`scorers:${code}:${limit}:${season || 'default'}`, 6 * HOUR, async () => { // 6h: scorer tables update after each round
     const res = await http.get(`/competitions/${code}/scorers`, { params });
     return res.data;
-  });
+  }, d => (d.scorers || []).length > 0);
 }
 
 function getTeamDetail(teamId) {
